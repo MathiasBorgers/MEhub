@@ -20,7 +20,7 @@ export function validateSchema<Schema extends ZodType>(schema: Schema, data: unk
   // In case z.void() was used as schema, the type of the data argument is function.
   // To successfully validate the data, we need to convert it to undefined.
   const result = schema.safeParse(
-    data instanceof FormData ? convertFormData(data) : typeof data === 'function' ? undefined : data,
+    data instanceof FormData ? convertFormData(data) : typeof data === 'function' ? {} : data,
   )
 
   return result.success
