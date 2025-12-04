@@ -52,7 +52,7 @@ interface ApiRouteOptions<Params, Schema extends ZodType, Auth extends boolean> 
  * A utility function used to abstract the common logic of API routes which are only accessible by all users (including
  * unauthenticated ones).
  *
- * @param options An object containing the configuration for the API route..
+ * @param options An object containing the configuration for the API route.
  */
 export function publicApiRoute<Params, Schema extends ZodType>(
   options: Omit<ApiRouteOptions<Params, Schema, false>, 'authenticated' | 'requiredRoles' | 'authenticationType'>,
@@ -64,7 +64,7 @@ export function publicApiRoute<Params, Schema extends ZodType>(
  * A utility function used to abstract the common logic of API routes which are only accessible by authenticated
  * users.
  *
- * @param options An object containing the configuration for the API route..
+ * @param options An object containing the configuration for the API route.
  */
 export function protectedApiRoute<Params, Schema extends ZodType = EmptySchema>(
   options: Omit<ApiRouteOptions<Params, Schema, true>, 'authenticated'>,
@@ -75,6 +75,7 @@ export function protectedApiRoute<Params, Schema extends ZodType = EmptySchema>(
 function apiRoute<Params = unknown, Schema extends ZodType = EmptySchema, Auth extends boolean = true>(
   options: ApiRouteOptions<Params, Schema, Auth>,
 ): ApiRoute<Params> {
+  const start = Date.now()
   const authenticated = options?.authenticated === undefined ? true : options?.authenticated
   const type = options?.type ?? 'body'
   const schema = options?.schema ?? emptySchema
@@ -86,9 +87,11 @@ function apiRoute<Params = unknown, Schema extends ZodType = EmptySchema, Auth e
     let profile: Profile | null | undefined = null
 
     if (authenticationType === 'jwt' && authenticated) {
+      logger.trace(`Checking authentication through HTTP headers.`)
       const [_, token] = (request.headers.get('Authorization') || ' ').split(' ')
       profile = validateJwtToken(token)
     } else if (authenticated) {
+      logger.trace(`Checking authentication through a session cookie.`)
       profile = await getSessionProfileFromCookie()
     }
 
@@ -96,7 +99,7 @@ function apiRoute<Params = unknown, Schema extends ZodType = EmptySchema, Auth e
       (!profile && authenticated) ||
       (profile && options.requiredRoles && !options.requiredRoles.includes(profile.role))
     ) {
-      logger.warn('Unauthorized user tried accessing API route.')
+      logger.warn(`Unauthorized user ${profile?.id} tried executing API Route.`)
       return unauthorized()
     }
 
@@ -112,12 +115,14 @@ function apiRoute<Params = unknown, Schema extends ZodType = EmptySchema, Auth e
     const {data, errors} = validateSchema(schema, unvalidatedData)
 
     if (errors || !data) {
+      logger.trace(`Validation of submitted data failed for API Route.`)
       return badRequest(errors)
     }
 
     try {
       const context = {request, data, profile, logger} as Context<Schema, Auth>
       const result = await options.routeFn(context, awaitedParams)
+      logger.info(`API Route completed successfully in ${Date.now() - start} ms`)
       return result ?? ok()
     } catch (error) {
       logger.error(error)

@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev | pino-pretty",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ./src",
     "lint-fix": "eslint ./src --fix",
-    "format": "prettier --write ./src"
+    "format": "prettier --write ./src",
+    "prisma:seed": "pnpx tsx --conditions=react-server ./prisma/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
