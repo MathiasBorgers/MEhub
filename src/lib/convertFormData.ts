@@ -11,8 +11,20 @@ export function convertFormData<T>(data: FormData): T {
   // Dit zijn interne dingen die door Next.js worden toegevoegd.
   const keys = Array.from(data.keys()).filter(key => !key.startsWith('$ACTION'))
 
+  // Controleer of er keys zijn die meerdere keren voorkomen (checkbox groups en selects met multiple).
+  const keyCounts: Record<string, number> = {}
+  keys.forEach(key => (keyCounts[key] = keyCounts[key] ? keyCounts[key] + 1 : 1))
+
   // Voeg alle top-level keys toe aan het resultaat.
-  keys.filter(key => !key.includes('.')).forEach(key => (result[key] = data.get(key)))
+  keys
+    .filter(key => !key.includes('.'))
+    .forEach(key => {
+      if (keyCounts[key] > 1) {
+        result[key] = data.getAll(key)
+      } else {
+        result[key] = data.get(key)
+      }
+    })
 
   // Vorm geneste form data met keys zoals arrayName.index.key en objectNaam.object.key om naar een object.
   const multipartKeys = keys.filter(key => key.includes('.'))

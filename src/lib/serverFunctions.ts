@@ -12,6 +12,7 @@ import {validateSchema} from '@/lib/validateSchema'
 import type {Role} from '@/generated/prisma/enums'
 import type {Logger} from 'pino'
 import {getLogger} from '@/lib/logger'
+import {convertFormData} from '@/lib/convertFormData'
 
 const emptySchema = z.object({})
 type EmptySchema = ZodType<typeof emptySchema>
@@ -171,9 +172,7 @@ async function handleServerFunction<Schema extends ZodType, ReturnType, Auth ext
     const {data, errors} = validateSchema(schema, unvalidatedData)
 
     // Generate the data to send back to the client in case of errors, or in case of success if sendBackOnSuccess is set.
-    const submittedData = (
-      unvalidatedData instanceof FormData ? Object.fromEntries(unvalidatedData.entries()) : unvalidatedData
-    ) as Record<string, string>
+    const submittedData = generateSubmittedData(unvalidatedData)
 
     if (errors) {
       logger.trace(`Validation of submitted data failed for ${functionName}.`)
@@ -220,8 +219,30 @@ async function handleServerFunction<Schema extends ZodType, ReturnType, Auth ext
       errors: [options.globalErrorMessage ?? 'Something went wrong, please ensure you are logged in and try again'],
     },
     success: false,
-    submittedData: (unvalidatedData instanceof FormData
-      ? Object.fromEntries(unvalidatedData.entries())
-      : unvalidatedData) as Record<string, string>,
+    submittedData: generateSubmittedData(unvalidatedData),
   }
+}
+
+function generateSubmittedData(data: unknown): Record<string, string> {
+  if (!(data instanceof FormData)) {
+    return data as Record<string, string>
+  }
+
+  // This includes duplicate keys, such as a checkbox group merged into an array and multipart keys such as
+  // property.0.property2 merged into {property: [{property2: value}]}.
+  const formDataObj: Record<string, string> = convertFormData(data)
+
+  // Multipart keys must be sent back as property.0.property2 to be properly re-processed by react-hook-form.
+  Object.keys(Object.fromEntries(data.entries()))
+    .filter(k => k.includes('.'))
+    .forEach(k => {
+      // Add the key to the returned object.
+      formDataObj[k] = data.get(k) as string
+
+      // Remove the processed multipart key from the object to avoid duplication.
+      const firstSegment = k.split('.')[0]
+      delete formDataObj[firstSegment]
+    })
+
+  return formDataObj
 }
