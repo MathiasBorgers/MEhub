@@ -29,6 +29,7 @@ export const registerAction = publicFormAction({
     redirect('/contacts')
   },
   functionName: 'Register action',
+  globalErrorMessage: "We couldn't create an account for you, please try again or log in with an existing account.",
 })
 
 export const signInAction = publicFormAction({
@@ -49,7 +50,12 @@ export const signInAction = publicFormAction({
 
     if (!isValidPassword) {
       logger.warn(`Failed sign in attempt for ${data.email}.`)
-      return
+      return {
+        success: false,
+        errors: {
+          errors: ['No account found with the given email/password combination.'],
+        },
+      }
     }
 
     logger.info(`Successful authentication request for ${user!.id}`)

@@ -42,5 +42,5 @@ export function useZodValidatedForm<Schema extends ZodObject, ReturnType>(
     }
   }, [state, form])
 
-  return [form, dispatch, state.data as FormActionResponse<ReturnType>]
+  return [form, dispatch, state]
 }
