@@ -1,5 +1,6 @@
 import React from "react"
 import { Header } from "@/components/header"
+import { Button } from "@/components/ui/button"
 import { Star, Mail, LinkIcon } from "lucide-react"
 import { mockUsers } from "@/lib/mock-data"
 import { ProfileTabs } from "@/components/profile-tabs"
