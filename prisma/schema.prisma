@@ -5,9 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider   = "prisma-client"
-  engineType = "client"
-  output     = "../src/generated/prisma"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -17,15 +16,26 @@ datasource db {
 
 enum Role {
   User
+  Developer
+  Admin
 }
 
 model User {
-  id       String    @id @unique @default(uuid()) @db.Uuid
-  email    String    @unique @db.VarChar(255)
-  password String
-  username String
-  role     Role      @default(User)
-  sessions Session[]
+  id             String     @id @unique @default(uuid()) @db.Uuid
+  email          String     @unique @db.VarChar(255)
+  password       String
+  username       String     @unique @db.VarChar(50)
+  role           Role       @default(User)
+  bio            String?    @db.Text
+  avatar         String?    @db.VarChar(255)
+  verified       Boolean    @default(false)
+  joinDate       DateTime   @default(now())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  sessions       Session[]
+  scripts        Script[]
+  reviews        Review[]
+  downloads      Download[]
 }
 
 model Session {
@@ -34,4 +44,95 @@ model Session {
   activeUntil DateTime
   userId      String   @db.Uuid
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id          String   @id @unique @default(uuid()) @db.Uuid
+  name        String   @unique @db.VarChar(100)
+  slug        String   @unique @db.VarChar(100)
+  description String   @db.Text
+  icon        String   @db.VarChar(50)
+  color       String   @db.VarChar(7)
+  scripts     Script[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Script {
+  id              String     @id @unique @default(uuid()) @db.Uuid
+  title           String     @db.VarChar(200)
+  description     String     @db.VarChar(500)
+  fullDescription String     @db.Text
+  version         String     @db.VarChar(20)
+  downloads       Int        @default(0)
+  averageRating   Float?     @default(0)
+  reviewCount     Int        @default(0)
+  authorId        String     @db.Uuid
+  categoryId      String     @db.Uuid
+  requirements    String[]   @db.VarChar(100)
+  features        String[]   @db.VarChar(200)
+  screenshots     String[]   @db.VarChar(255)
+  isActive        Boolean    @default(true)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  author          User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category        Category   @relation(fields: [categoryId], references: [id])
+  tags            ScriptTag[]
+  reviews         Review[]
+  files           File[]
+  scriptDownloads Download[]
+}
+
+model Tag {
+  id        String      @id @unique @default(uuid()) @db.Uuid
+  name      String      @unique @db.VarChar(50)
+  color     String?     @db.VarChar(7)
+  scripts   ScriptTag[]
+  createdAt DateTime    @default(now())
+}
+
+model ScriptTag {
+  scriptId String @db.Uuid
+  tagId    String @db.Uuid
+  script   Script @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+  tag      Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([scriptId, tagId])
+}
+
+model Review {
+  id        String   @id @unique @default(uuid()) @db.Uuid
+  rating    Int      // 1-5 sterren
+  comment   String?  @db.Text
+  userId    String   @db.Uuid
+  scriptId  String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  script    Script   @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, scriptId]) // Een gebruiker kan maar één review per script geven
+}
+
+model File {
+  id       String @id @unique @default(uuid()) @db.Uuid
+  name     String @db.VarChar(255)
+  size     BigInt
+  type     String @db.VarChar(100)
+  url      String @db.VarChar(500)
+  scriptId String @db.Uuid
+  script   Script @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+}
+
+model Download {
+  id         String   @id @unique @default(uuid()) @db.Uuid
+  userId     String   @db.Uuid
+  scriptId   String   @db.Uuid
+  ipAddress  String?  @db.VarChar(45)
+  userAgent  String?  @db.Text
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  script     Script   @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, scriptId]) // Een gebruiker kan een script maar één keer downloaden
 }

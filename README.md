@@ -1,3 +1,43 @@
+# MEhub - RuneScape 3 Script Sharing Platform
+
+## Test Accounts / Inloggegevens
+
+Voor het testen van de authenticatie functionaliteit zijn de volgende test accounts beschikbaar:
+
+### Administrator
+- **Email:** admin@mehub.com
+- **Password:** admin123
+- **Role:** Admin
+- **Description:** Platform administrator with full access
+
+### Developer Accounts
+- **Email:** developer@mehub.com
+- **Username:** scriptmaster
+- **Password:** dev123
+- **Role:** Developer
+- **Description:** Experienced script developer with verified status
+
+- **Email:** developer2@mehub.com
+- **Username:** automate_pro
+- **Password:** dev123
+- **Role:** Developer
+- **Description:** Professional script developer
+
+### Regular Users
+- **Email:** user@mehub.com
+- **Username:** gamer123
+- **Password:** user123
+- **Role:** User
+- **Description:** Casual RS3 player
+
+- **Email:** user2@mehub.com to user7@mehub.com
+- **Username:** player2 to player7
+- **Password:** user123
+- **Role:** User
+- **Description:** Additional test users
+
+---
+
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/ZQkUYFyq)
 # Opgave
 

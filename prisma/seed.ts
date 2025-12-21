@@ -1,12 +1,11 @@
+import 'dotenv/config'
 import {seedDev} from './seedDev'
 import {seedProd} from './seedProd'
 import {env} from 'process'
 import {PrismaClient} from '@/generated/prisma/client'
-import {PrismaPg} from '@prisma/adapter-pg'
 
 const runtimeEnv = env.NODE_ENV ?? 'development'
-const client = new PrismaClient({adapter: new PrismaPg({connectionString: process.env.DATABASE_URL})})
-
+const client = new PrismaClient()
 const seedFunction = runtimeEnv === 'development' ? seedDev : seedProd
 
 seedFunction(client)

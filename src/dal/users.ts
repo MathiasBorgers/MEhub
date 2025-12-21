@@ -35,6 +35,18 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 }
 
 /**
+ * Retrieve a user's profile based on their id.
+ *
+ * @param id The id of the user to retrieve.
+ */
+export async function getUserById(id: string): Promise<Profile | null> {
+  return prismaClient.user.findUnique({
+    where: {id},
+    omit: profileOmit,
+  })
+}
+
+/**
  * Start a new session.
  *
  * @param userId The id of the user for whom to start a new session.
