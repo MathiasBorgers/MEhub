@@ -17,7 +17,7 @@ export function EmptyState({ icon, title, description, actionText, actionLink }:
       <h3 className="text-2xl font-bold text-mehub-text mb-2">{title}</h3>
       <p className="text-mehub-text-secondary mb-6">{description}</p>
       {actionText && actionLink && (
-        <Link href={actionLink as unknown as any}>
+        <Link href={actionLink}>
           <Button className="bg-mehub-primary text-mehub-bg hover:bg-mehub-primary/90">{actionText}</Button>
         </Link>
       )}

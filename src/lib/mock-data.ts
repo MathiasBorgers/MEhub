@@ -1,8 +1,32 @@
+export enum UserRole {
+  DEVELOPER = "developer",
+  USER = "user",
+  ADMIN = "admin"
+}
+
+export enum ScriptCategory {
+  COMBAT = "Combat",
+  SKILLING = "Skilling", 
+  QUESTS = "Quests",
+  MINING = "Mining",
+  WOODCUTTING = "Woodcutting",
+  FISHING = "Fishing",
+  COOKING = "Cooking",
+  FARMING = "Farming",
+  CRAFTING = "Crafting",
+  SMITHING = "Smithing",
+  RUNECRAFTING = "Runecrafting",
+  DUNGEONEERING = "Dungeoneering",
+  DIVINATION = "Divination",
+  INVENTION = "Invention",
+  ARCHAEOLOGY = "Archaeology"
+}
+
 export interface User {
   id: string
   username: string
   email: string
-  role: "developer" | "user"
+  role: UserRole
   bio: string
   avatar: string
   joinDate: string
@@ -24,7 +48,7 @@ export interface Script {
   rating: number
   reviewCount: number
   author: User
-  category: string
+  category: ScriptCategory
   tags: string[]
   screenshots: string[]
   files: {
@@ -380,7 +404,7 @@ function toTitle(name: string) {
 export const mockScripts: Script[] = releaseNames.map((raw, i) => {
   const title = toTitle(raw.replace(/(-main|_main)$/i, ''))
   const category = guessCategory(raw)
-  const authorId = `user-${(i % Object.keys(mockUsers).length) + 1}` as keyof typeof mockUsers
+  const authorId = `user-${(i % Object.keys(mockUsers).length) + 1}`
   const id = `script-${i + 1}`
   return {
     id,
@@ -391,7 +415,7 @@ export const mockScripts: Script[] = releaseNames.map((raw, i) => {
     downloads: Math.floor(Math.random() * 2500) + 50,
     rating: Math.round((3.8 + Math.random() * 1.2) * 10) / 10,
     reviewCount: Math.floor(Math.random() * 420),
-    author: mockUsers[authorId as string],
+    author: mockUsers[authorId],
     category,
     tags: raw
       .replace(/[-_]/g, ' ')

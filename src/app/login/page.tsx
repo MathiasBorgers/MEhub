@@ -4,7 +4,7 @@ import { Header } from "@/components/header"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Mail, Lock, Eye, EyeOff } from "lucide-react"
+import { Mail, Lock } from "lucide-react"
 import { loginAction } from "@/app/actions"
 import { useActionState } from "react"
 
@@ -37,7 +37,7 @@ export default function LoginPage() {
               <div>
                 <label className="block text-mehub-text font-medium mb-2">Email Address</label>
                 <div className="relative">
-                  <Mail size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-mehub-text-secondary" />
+                  <Mail size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-900" />
                   <input
                     type="email"
                     name="email"
@@ -53,7 +53,7 @@ export default function LoginPage() {
               <div>
                 <label className="block text-mehub-text font-medium mb-2">Password</label>
                 <div className="relative">
-                  <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-mehub-text-secondary" />
+                  <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-900" />
                   <input
                     type="password"
                     name="password"

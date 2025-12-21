@@ -26,7 +26,7 @@ const registerSchema = z.object({
   path: ["confirmPassword"],
 })
 
-export async function loginAction(prevState: any, formData: FormData) {
+export async function loginAction(prevState: { error?: string } | null, formData: FormData) {
   try {
     const rawData = {
       email: formData.get('email') as string,
@@ -91,7 +91,7 @@ export async function loginAction(prevState: any, formData: FormData) {
   }
 }
 
-export async function registerAction(prevState: any, formData: FormData) {
+export async function registerAction(prevState: { error?: string } | null, formData: FormData) {
   try {
     const rawData = {
       username: formData.get('username') as string,

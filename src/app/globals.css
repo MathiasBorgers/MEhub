@@ -76,6 +76,16 @@
   --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
   --sidebar-border: oklch(0.928 0.006 264.531);
   --sidebar-ring: oklch(0.707 0.022 261.325);
+  
+  /* MEhub custom colors - Light mode */
+  --mehub-bg: oklch(0.13 0.028 261.692);
+  --mehub-card: oklch(0.21 0.034 264.665);
+  --mehub-border: oklch(1 0 0 / 10%);
+  --mehub-text: oklch(0.985 0.002 247.839);
+  --mehub-text-secondary: oklch(0.707 0.022 261.325);
+  --mehub-primary: oklch(0.737 0.169 37.542);
+  --mehub-secondary: oklch(0.769 0.188 70.08);
+  --mehub-success: oklch(0.6 0.118 184.704);
 }
 
 .dark {
@@ -110,6 +120,16 @@
   --sidebar-accent-foreground: oklch(0.985 0.002 247.839);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
+  
+  /* MEhub custom colors - Dark mode */
+  --mehub-bg: oklch(0.13 0.028 261.692);
+  --mehub-card: oklch(0.21 0.034 264.665);
+  --mehub-border: oklch(1 0 0 / 10%);
+  --mehub-text: oklch(0.985 0.002 247.839);
+  --mehub-text-secondary: oklch(0.707 0.022 261.325);
+  --mehub-primary: oklch(0.737 0.169 37.542);
+  --mehub-secondary: oklch(0.769 0.188 70.08);
+  --mehub-success: oklch(0.6 0.118 184.704);
 }
 
 @layer base {

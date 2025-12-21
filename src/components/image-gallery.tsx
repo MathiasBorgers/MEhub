@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import Image from "next/image"
 
 interface ImageGalleryProps {
   screenshots: string[]
@@ -29,9 +30,11 @@ export function ImageGallery({ screenshots }: ImageGalleryProps) {
   return (
     <div className="relative">
       <div className="aspect-video bg-mehub-card rounded-lg overflow-hidden relative group">
-        <img
+        <Image
           src={screenshots[currentImageIndex]}
           alt={`Screenshot ${currentImageIndex + 1}`}
+          width={800}
+          height={450}
           className="w-full h-full object-cover"
         />
         

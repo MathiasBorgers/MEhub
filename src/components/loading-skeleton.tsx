@@ -1,3 +1,15 @@
+export function LoadingSkeleton() {
+  return (
+    <div className="min-h-screen bg-mehub-bg flex items-center justify-center">
+      <div className="animate-pulse flex flex-col items-center gap-4">
+        <div className="w-16 h-16 bg-mehub-hover rounded-lg" />
+        <div className="h-4 bg-mehub-hover rounded w-32" />
+        <div className="h-3 bg-mehub-hover rounded w-24" />
+      </div>
+    </div>
+  )
+}
+
 export function ScriptCardSkeleton() {
   return (
     <div className="animate-pulse">

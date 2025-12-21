@@ -10,7 +10,7 @@ interface DashboardActionsProps {
   onDelete?: (id: string) => void
 }
 
-export function DashboardActions({ scriptId, scriptTitle, onDelete }: DashboardActionsProps) {
+export function DashboardActions({ scriptId, scriptTitle: _scriptTitle, onDelete }: DashboardActionsProps) {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
 
   const handleDelete = () => {

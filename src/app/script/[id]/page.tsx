@@ -26,14 +26,6 @@ export default async function ScriptDetail({ params }: { params: Promise<{ id: s
   const scriptReviews = mockReviews.filter((r) => r.scriptId === script.id)
   const relatedScripts = mockScripts.filter((s) => s.category === script.category && s.id !== script.id).slice(0, 3)
 
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % script.screenshots.length)
-  }
-
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + script.screenshots.length) % script.screenshots.length)
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -186,7 +178,7 @@ export default async function ScriptDetail({ params }: { params: Promise<{ id: s
                           </div>
                         </div>
                         <div className="flex items-center gap-1">
-                          {[...Array(5)].map((_, i) => (
+                          {Array.from({ length: 5 }).map((_, i) => (
                             <Star
                               key={i}
                               size={14}
@@ -216,7 +208,7 @@ export default async function ScriptDetail({ params }: { params: Promise<{ id: s
                       <div className="text-3xl font-bold text-mehub-primary">{script.rating}</div>
                       <div className="flex flex-col">
                         <div className="flex gap-1">
-                          {[...Array(5)].map((_, i) => (
+                          {Array.from({ length: 5 }).map((_, i) => (
                             <Star
                               key={i}
                               size={16}

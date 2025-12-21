@@ -2,6 +2,8 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
+import { Suspense } from "react"
+import { LoadingSkeleton } from "@/components/loading-skeleton"
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -36,7 +38,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`font-sans antialiased bg-mehub-bg text-mehub-text`}>{children}</body>
+      <body className="font-sans antialiased bg-mehub-bg text-mehub-text">
+        <Suspense fallback={<LoadingSkeleton />}>
+          {children}
+        </Suspense>
+      </body>
     </html>
   )
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Search, User, LogOut, Settings, Upload, ChevronDown } from "lucide-react"
+import { Search, LogOut, Settings, Upload, ChevronDown } from "lucide-react"
 import { MobileMenu } from "./mobile-menu"
 import { logoutAction } from "@/app/actions"
 
@@ -23,10 +23,10 @@ export function ClientHeader() {
       const parts = token.split('.')
       if (parts.length !== 3) return null
       
-      const payload = JSON.parse(atob(parts[1]))
+      const payload = JSON.parse(atob(parts[1])) as { username?: string; email?: string }
       return {
-        username: payload.username || 'User',
-        email: payload.email || 'user@example.com'
+        username: payload.username ?? 'User',
+        email: payload.email ?? 'user@example.com'
       }
     } catch {
       return null

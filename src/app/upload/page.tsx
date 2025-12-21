@@ -118,9 +118,9 @@ export default function UploadPage() {
     }
   }
 
-  const isBasicComplete = formData.title && formData.category
-  const isDetailsComplete = formData.description && formData.fullDescription && formData.features.length > 0
-  const isFilesComplete = uploadedFiles.length > 0
+  const _isBasicComplete = formData.title && formData.category
+  const _isDetailsComplete = formData.description && formData.fullDescription && formData.features.length > 0
+  const _isFilesComplete = uploadedFiles.length > 0
 
   return (
     <div className="min-h-screen bg-background">

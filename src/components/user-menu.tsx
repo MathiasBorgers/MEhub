@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { User, LogOut, Settings, Upload } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { logoutAction } from "@/app/actions"
 import Link from "next/link"
 import type { Profile } from "@/models/users"

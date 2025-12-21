@@ -1,10 +1,7 @@
 import React from "react"
 import { Header } from "@/components/header"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { Star, Download, Mail, LinkIcon } from "lucide-react"
-import { mockUsers, mockScripts } from "@/lib/mock-data"
+import { Star, Mail, LinkIcon } from "lucide-react"
+import { mockUsers } from "@/lib/mock-data"
 import { ProfileTabs } from "@/components/profile-tabs"
 
 export default async function ProfilePage({ params }: { params: Promise<{ username: string }> }) {
@@ -21,9 +18,6 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
       </div>
     )
   }
-
-  // Get user's scripts
-  const userScripts = mockScripts.filter((s) => s.author.id === user.id)
 
   return (
     <div className="min-h-screen bg-background">

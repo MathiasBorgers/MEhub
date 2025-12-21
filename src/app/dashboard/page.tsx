@@ -2,8 +2,9 @@ import { Header } from "@/components/header"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Edit2, Trash2, TrendingUp, Download, Star, Eye } from "lucide-react"
-import { mockScripts, mockUsers } from "@/lib/mock-data"
+import Image from "next/image"
+import { Edit2, TrendingUp, Download, Star, Eye } from "lucide-react"
+import { mockScripts, mockUsers, type Script } from "@/lib/mock-data"
 import { DashboardActions } from "@/components/dashboard-actions"
 import { getCurrentUser } from "@/lib/getCurrentUser"
 import { redirect } from "next/navigation"
@@ -22,7 +23,7 @@ export default async function DashboardPage() {
   const mockUser = Object.values(mockUsers).find(u => u.email === currentUser.email)
   console.log("Dashboard - Found mock user:", mockUser)
   
-  let userScripts = []
+  let userScripts: Script[] = []
   let totalStats = { uploads: 0, downloads: 0, avgRating: 0 }
   
   if (!mockUser) {
@@ -130,9 +131,11 @@ export default async function DashboardPage() {
                     <tr key={script.id} className="border-b border-mehub-border hover:bg-mehub-bg transition-colors">
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          <img
+                          <Image
                             src={script.screenshots[0] || "/placeholder.svg"}
                             alt={script.title}
+                            width={40}
+                            height={40}
                             className="w-10 h-10 rounded object-cover"
                           />
                           <div>

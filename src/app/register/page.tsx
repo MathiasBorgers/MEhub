@@ -37,7 +37,7 @@ export default function RegisterPage() {
               <div>
                 <label className="block text-mehub-text font-medium mb-2">Username</label>
                 <div className="relative">
-                  <User size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-mehub-text-secondary" />
+                  <User size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-900" />
                   <input
                     type="text"
                     name="username"
@@ -69,7 +69,7 @@ export default function RegisterPage() {
               <div>
                 <label className="block text-mehub-text font-medium mb-2">Password</label>
                 <div className="relative">
-                  <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-mehub-text-secondary" />
+                  <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-900" />
                   <input
                     type="password"
                     name="password"
@@ -85,7 +85,7 @@ export default function RegisterPage() {
               <div>
                 <label className="block text-mehub-text font-medium mb-2">Confirm Password</label>
                 <div className="relative">
-                  <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-mehub-text-secondary" />
+                  <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-white" />
                   <input
                     type="password"
                     name="confirmPassword"

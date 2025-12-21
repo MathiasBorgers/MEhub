@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Star, Download } from "lucide-react"
 import { mockScripts, mockCategories } from "@/lib/mock-data"
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 
 type SortOption = "trending" | "recent" | "top-rated" | "downloads"
@@ -14,20 +14,15 @@ type SortOption = "trending" | "recent" | "top-rated" | "downloads"
 export default function Marketplace() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  
+  // Directly derive selected category from URL params
+  const categoryParam = searchParams.get("category")
+  const selectedCategory = categoryParam ? decodeURIComponent(categoryParam) : null
+  
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [sortBy, setSortBy] = useState<SortOption>("trending")
   const [minRating, setMinRating] = useState(0)
-
-  useEffect(() => {
-    const categoryParam = searchParams.get("category")
-    if (categoryParam) {
-      setSelectedCategory(decodeURIComponent(categoryParam))
-    } else {
-      setSelectedCategory(null)
-    }
-  }, [searchParams])
 
   const handleCategoryFilter = (categoryName: string | null) => {
     if (categoryName === null) {
@@ -43,7 +38,7 @@ export default function Marketplace() {
 
     // Filter by category
     if (selectedCategory) {
-      scripts = scripts.filter((s) => s.category === selectedCategory)
+      scripts = scripts.filter((s) => String(s.category) === selectedCategory)
     }
 
     // Filter by search query
