@@ -17,6 +17,18 @@ export const logger =
     // Info is het standaard niveau, maar we moeten dit natuurlijk kunnen overschrijven als we error, debug, trace, ...
     // logs willen zien.
     level: process.env.PINO_LOG_LEVEL || 'info',
+    // In production loggen we naar een bestand, in development naar de console (via pino-pretty in package.json)
+    ...(process.env.NODE_ENV === 'production'
+      ? {
+          transport: {
+            target: 'pino/file',
+            options: {
+              destination: './logs/app.log',
+              mkdir: true,
+            },
+          },
+        }
+      : {}),
   })
 
 // Controleer of er al een instantie van de logger aanwezig is en maak deze aan als dit niet nog niet het geval is.

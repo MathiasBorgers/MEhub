@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Search, LogOut, Settings, Upload, ChevronDown } from "lucide-react"
+import { LogOut, Settings, Upload, ChevronDown, User, Shield, LayoutDashboard, Lock } from "lucide-react"
 import { MobileMenu } from "./mobile-menu"
-import { logoutAction } from "@/app/actions"
+import { signOutServerFunction } from "@/serverFunctions/users"
 
 interface UserInfo {
   username: string
   email: string
+  role: string
 }
 
 export function ClientHeader() {
@@ -17,19 +18,13 @@ export function ClientHeader() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
 
-  // Simple JWT decoder (client-side only, for display purposes)
-  const decodeJWT = (token: string): UserInfo | null => {
+  const handleLogout = async () => {
     try {
-      const parts = token.split('.')
-      if (parts.length !== 3) return null
-      
-      const payload = JSON.parse(atob(parts[1])) as { username?: string; email?: string }
-      return {
-        username: payload.username ?? 'User',
-        email: payload.email ?? 'user@example.com'
-      }
-    } catch {
-      return null
+      await signOutServerFunction()
+      // Client-side redirect after successful logout
+      window.location.href = '/'
+    } catch (error) {
+      console.error('Logout failed:', error)
     }
   }
 
@@ -37,32 +32,36 @@ export function ClientHeader() {
     const checkLoginStatus = () => {
       const cookies = document.cookie.split(';')
       
-      const authTokenCookie = cookies.find(cookie => 
-        cookie.trim().startsWith('auth-token=')
-      )
-      const hasLoggedIn = cookies.some(cookie => 
-        cookie.trim().startsWith('logged-in=true')
+      // Lees de nieuwe session-user cookie (deze is niet httpOnly en kan door JavaScript gelezen worden)
+      const sessionUserCookie = cookies.find(cookie =>
+        cookie.trim().startsWith('session-user=')
       )
       
-      if (authTokenCookie && hasLoggedIn) {
-        const token = authTokenCookie.split('=')[1]
-        const userInfo = decodeJWT(token)
-        setUserInfo(userInfo)
-        setIsLoggedIn(true)
+      if (sessionUserCookie) {
+        try {
+          const cookieValue = sessionUserCookie.split('=')[1]
+          const decoded = decodeURIComponent(cookieValue)
+          const userInfo = JSON.parse(decoded) as UserInfo
+          setUserInfo(userInfo)
+          setIsLoggedIn(true)
+        } catch (error) {
+          console.error('Failed to parse session cookie:', error)
+          setUserInfo(null)
+          setIsLoggedIn(false)
+        }
       } else {
         setUserInfo(null)
         setIsLoggedIn(false)
       }
     }
 
-    // Initial check
+    // Initial check - ALLEEN bij mount
     checkLoginStatus()
 
-    // Check every 5 seconds
-    const interval = setInterval(checkLoginStatus, 5000)
-    
-    return () => clearInterval(interval)
-  }, [])
+    // VERWIJDER de interval - dit zorgt voor constant re-renders
+    // De cookie wordt automatisch bijgewerkt bij login/logout via window.location.href
+
+  }, []) // Lege dependency array - run alleen bij mount
 
   return (
     <header className="sticky top-0 z-50 border-b border-mehub-border bg-mehub-card/95 backdrop-blur-sm hover:border-orange-500/30 transition-colors">
@@ -98,17 +97,8 @@ export function ClientHeader() {
 
           {/* Right Section */}
           <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2 bg-mehub-bg rounded-lg px-3 py-2 border border-mehub-border hover:border-orange-500/50 transition-all">
-              <Search size={18} className="text-mehub-text-secondary" />
-              <input
-                type="text"
-                placeholder="Search scripts..."
-                className="bg-transparent text-sm text-mehub-text placeholder-mehub-text-secondary outline-none w-48"
-              />
-            </div>
-            
             {isLoggedIn ? (
-              <div className="relative">
+              <div className="hidden md:block relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center gap-2 p-2 rounded-lg hover:bg-mehub-card border border-mehub-border transition-colors"
@@ -138,47 +128,88 @@ export function ClientHeader() {
                           <div>
                             <p className="font-semibold text-white">{userInfo?.username || 'User'}</p>
                             <p className="text-sm text-slate-300">{userInfo?.email || 'user@example.com'}</p>
+                            <p className="text-xs text-orange-500 font-medium">{userInfo?.role || 'User'}</p>
                           </div>
                         </div>
                       </div>
 
                       <div className="py-2 bg-slate-900">
                         <Link
-                          href="/dashboard"
+                          href={`/profile/${userInfo?.username || ''}`}
+                          className="flex items-center gap-3 px-4 py-2 text-white hover:bg-slate-700 transition-colors"
+                          onClick={() => setIsUserMenuOpen(false)}
+                        >
+                          <User size={16} />
+                          Profile
+                        </Link>
+
+                        <Link
+                          href="/profile/edit"
                           className="flex items-center gap-3 px-4 py-2 text-white hover:bg-slate-700 transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <Settings size={16} />
-                          Dashboard
+                          Edit Profile
                         </Link>
-                        
+
                         <Link
-                          href="/upload"
+                          href="/profile/change-password"
                           className="flex items-center gap-3 px-4 py-2 text-white hover:bg-slate-700 transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
-                          <Upload size={16} />
-                          Upload Script
+                          <Lock size={16} />
+                          Change Password
                         </Link>
+
+                        {(userInfo?.role === 'Developer' || userInfo?.role === 'Admin') && (
+                          <Link
+                            href="/upload"
+                            className="flex items-center gap-3 px-4 py-2 text-white hover:bg-slate-700 transition-colors"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Upload size={16} />
+                            Upload Script
+                          </Link>
+                        )}
+
+                        {(userInfo?.role === 'Developer' || userInfo?.role === 'Admin') && (
+                          <Link
+                            href="/dashboard"
+                            className="flex items-center gap-3 px-4 py-2 text-white hover:bg-slate-700 transition-colors"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <LayoutDashboard size={16} />
+                            Dashboard
+                          </Link>
+                        )}
+
+                        {userInfo?.role === 'Admin' && (
+                          <Link
+                            href="/admin"
+                            className="flex items-center gap-3 px-4 py-2 text-orange-500 hover:bg-slate-700 transition-colors"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Shield size={16} />
+                            Admin Panel
+                          </Link>
+                        )}
 
                         <div className="border-t border-slate-700 my-2" />
                         
-                        <form action={logoutAction} className="w-full">
-                          <button
-                            type="submit"
-                            className="flex items-center gap-3 px-4 py-2 text-red-400 hover:bg-slate-700 transition-colors w-full text-left"
-                          >
-                            <LogOut size={16} />
-                            Sign Out
-                          </button>
-                        </form>
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center gap-3 px-4 py-2 text-red-400 hover:bg-slate-700 transition-colors w-full text-left"
+                        >
+                          <LogOut size={16} />
+                          Sign Out
+                        </button>
                       </div>
                     </div>
                   </>
                 )}
               </div>
             ) : (
-              <>
+              <div className="hidden md:flex gap-4">
                 <Link href="/login">
                   <Button className="border border-mehub-border bg-mehub-primary text-mehub-bg hover:bg-orange-500 hover:border-orange-500 hover:text-white transition-all">
                     Sign In
@@ -189,7 +220,7 @@ export function ClientHeader() {
                     Sign Up
                   </Button>
                 </Link>
-              </>
+              </div>
             )}
             
             <MobileMenu isLoggedIn={isLoggedIn} />

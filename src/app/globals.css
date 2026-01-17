@@ -37,6 +37,15 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-mehub-bg: var(--mehub-bg);
+  --color-mehub-card: var(--mehub-card);
+  --color-mehub-border: var(--mehub-border);
+  --color-mehub-text: var(--mehub-text);
+  --color-mehub-text-secondary: var(--mehub-text-secondary);
+  --color-mehub-primary: var(--mehub-primary);
+  --color-mehub-accent: var(--mehub-accent);
+  --color-mehub-secondary: var(--mehub-secondary);
+  --color-mehub-success: var(--mehub-success);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -84,6 +93,7 @@
   --mehub-text: oklch(0.985 0.002 247.839);
   --mehub-text-secondary: oklch(0.707 0.022 261.325);
   --mehub-primary: oklch(0.737 0.169 37.542);
+  --mehub-accent: oklch(0.737 0.169 37.542); /* Orange ME color */
   --mehub-secondary: oklch(0.769 0.188 70.08);
   --mehub-success: oklch(0.6 0.118 184.704);
 }
@@ -128,6 +138,7 @@
   --mehub-text: oklch(0.985 0.002 247.839);
   --mehub-text-secondary: oklch(0.707 0.022 261.325);
   --mehub-primary: oklch(0.737 0.169 37.542);
+  --mehub-accent: oklch(0.737 0.169 37.542); /* Orange ME color */
   --mehub-secondary: oklch(0.769 0.188 70.08);
   --mehub-success: oklch(0.6 0.118 184.704);
 }

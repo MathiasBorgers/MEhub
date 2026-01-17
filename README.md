@@ -8,33 +8,40 @@ Voor het testen van de authenticatie functionaliteit zijn de volgende test accou
 
 ### Administrator
 - **Email:** admin@mehub.com
+- **Username:** admin
 - **Password:** admin123
 - **Role:** Admin
 - **Description:** Platform administrator with full access
 
 ### Developer Accounts
+
+**Developer 1:**
 - **Email:** developer@mehub.com
 - **Username:** scriptmaster
-- **Password:** dev123
+- **Password:** developer123
 - **Role:** Developer
 - **Description:** Experienced script developer with verified status
 
+**Developer 2:**
 - **Email:** developer2@mehub.com
 - **Username:** automate_pro
-- **Password:** dev123
+- **Password:** developer123
 - **Role:** Developer
 - **Description:** Professional script developer
 
 ### Regular Users
+
+**Main User:**
 - **Email:** user@mehub.com
 - **Username:** gamer123
-- **Password:** user123
+- **Password:** password123
 - **Role:** User
 - **Description:** Casual RS3 player
 
-- **Email:** user2@mehub.com to user7@mehub.com
-- **Username:** player2 to player7
-- **Password:** user123
+**Additional Test Users:**
+- **Emails:** user2@mehub.com to user7@mehub.com
+- **Usernames:** player2 to player7
+- **Password:** password123
 - **Role:** User
 - **Description:** Additional test users
 

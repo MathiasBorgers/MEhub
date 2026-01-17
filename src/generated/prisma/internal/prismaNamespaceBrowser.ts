@@ -57,7 +57,8 @@ export const ModelName = {
   ScriptTag: 'ScriptTag',
   Review: 'Review',
   File: 'File',
-  Download: 'Download'
+  Download: 'Download',
+  ScriptLike: 'ScriptLike'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -84,7 +85,6 @@ export const UserScalarFieldEnum = {
   role: 'role',
   bio: 'bio',
   avatar: 'avatar',
-  verified: 'verified',
   joinDate: 'joinDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -132,6 +132,7 @@ export const ScriptScalarFieldEnum = {
   features: 'features',
   screenshots: 'screenshots',
   isActive: 'isActive',
+  luaContent: 'luaContent',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -192,6 +193,16 @@ export const DownloadScalarFieldEnum = {
 } as const
 
 export type DownloadScalarFieldEnum = (typeof DownloadScalarFieldEnum)[keyof typeof DownloadScalarFieldEnum]
+
+
+export const ScriptLikeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  scriptId: 'scriptId',
+  createdAt: 'createdAt'
+} as const
+
+export type ScriptLikeScalarFieldEnum = (typeof ScriptLikeScalarFieldEnum)[keyof typeof ScriptLikeScalarFieldEnum]
 
 
 export const SortOrder = {

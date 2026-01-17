@@ -3,13 +3,41 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
 import { ArrowRight, Star, Download, Zap } from "lucide-react"
-import { mockScripts, mockCategories, mockUsers } from "@/lib/mock-data"
+import { getScripts } from "@/dal/scripts"
+import { getCategoriesWithScriptCount } from "@/dal/categories"
+import { prismaClient } from "@/dal/prismaClient"
 
-export default function Home() {
-  const featuredScripts = mockScripts.slice(0, 3)
-  const topContributors = Object.values(mockUsers)
-    .sort((a, b) => b.stats.totalDownloads - a.stats.totalDownloads)
-    .slice(0, 3)
+export default async function Home() {
+  // Fetch real data from database
+  const allScripts = await getScripts({ isActive: true, limit: 3, sortBy: 'downloads', sortOrder: 'desc' })
+  const categories = await getCategoriesWithScriptCount()
+
+  // Get total counts
+  const totalScripts = await prismaClient.script.count({ where: { isActive: true } })
+  const totalUsers = await prismaClient.user.count({ where: { role: { in: ['Developer', 'Admin'] } } })
+
+  // Get top contributors (users with most downloads)
+  const topContributors = await prismaClient.user.findMany({
+    where: {
+      role: { in: ['Developer', 'Admin'] },
+      scripts: { some: {} }
+    },
+    take: 3,
+    include: {
+      _count: {
+        select: { scripts: true }
+      },
+      scripts: {
+        select: {
+          _count: {
+            select: { scriptDownloads: true }
+          }
+        }
+      }
+    }
+  })
+
+  const featuredScripts = allScripts
 
   return (
     <div className="min-h-screen bg-background">
@@ -46,38 +74,20 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-
-            {/* Search Bar */}
-            <div className="mt-12">
-              <div className="flex items-center gap-2 max-w-xl mx-auto bg-mehub-card rounded-lg px-4 py-3 border border-mehub-border hover:border-orange-500/50 transition-all">
-                <input
-                  type="text"
-                  placeholder="Search scripts by name, category, or author..."
-                  className="bg-transparent flex-1 text-mehub-text placeholder-mehub-text-secondary outline-none"
-                />
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-mehub-border text-mehub-text hover:bg-orange-500/10 hover:border-orange-500 hover:text-orange-500 transition-all bg-transparent"
-                >
-                  Search
-                </Button>
-              </div>
-            </div>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mt-20 max-w-2xl mx-auto">
             <div className="text-center">
-              <div className="text-3xl font-bold text-mehub-primary">{mockScripts.length}</div>
+              <div className="text-3xl font-bold text-mehub-primary">{totalScripts}</div>
               <div className="text-mehub-text-secondary text-sm mt-1">RS3 Scripts</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-mehub-secondary">{mockCategories.length}</div>
+              <div className="text-3xl font-bold text-mehub-secondary">{categories.length}</div>
               <div className="text-mehub-text-secondary text-sm mt-1">Categories</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-mehub-success">{Object.keys(mockUsers).length}</div>
+              <div className="text-3xl font-bold text-mehub-success">{totalUsers}</div>
               <div className="text-mehub-text-secondary text-sm mt-1">Scripters</div>
             </div>
           </div>
@@ -116,12 +126,12 @@ export default function Home() {
                     <div className="flex items-center justify-between pt-2 border-t border-mehub-border">
                       <div className="flex items-center gap-1">
                         <Star size={16} className="text-mehub-secondary" fill="currentColor" />
-                        <span className="text-mehub-text text-sm font-medium">{script.rating}</span>
-                        <span className="text-mehub-text-secondary text-xs">({script.reviewCount})</span>
+                        <span className="text-mehub-text text-sm font-medium">{script.averageRating?.toFixed(1) || "N/A"}</span>
+                        <span className="text-mehub-text-secondary text-xs">({script._count.reviews})</span>
                       </div>
                       <div className="flex items-center gap-1 text-mehub-text-secondary text-sm">
                         <Download size={14} />
-                        {script.downloads}
+                        {script._count.scriptDownloads}
                       </div>
                     </div>
                   </div>
@@ -148,12 +158,11 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {mockCategories.map((category) => (
+            {categories.map((category) => (
               <Link key={category.id} href={`/marketplace?category=${encodeURIComponent(category.name)}`}>
-                <Card className="bg-mehub-card border-mehub-border hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/30 transition-all cursor-pointer p-4 text-center">
-                  <div className="text-3xl mb-2 hover:scale-110 transition-transform">{category.icon}</div>
-                  <h3 className="font-semibold text-mehub-text text-sm">{category.name}</h3>
-                  <p className="text-mehub-text-secondary text-xs mt-2">{category.scriptCount} scripts</p>
+                <Card className="bg-mehub-card border-mehub-border hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/30 transition-all cursor-pointer p-6 text-center">
+                  <h3 className="font-semibold text-mehub-text mb-2">{category.name}</h3>
+                  <p className="text-mehub-text-secondary text-xs">{category.scriptCount} scripts</p>
                 </Card>
               </Link>
             ))}
@@ -167,41 +176,39 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-mehub-text mb-12">Top Scripters</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {topContributors.map((user) => (
-              <Link key={user.id} href={`/profile/${user.username}`}>
-                <Card className="bg-mehub-card border-mehub-border hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/30 transition-all cursor-pointer p-6">
-                  <div className="flex items-start gap-4">
-                    <img
-                      src={user.avatar || "/placeholder.svg"}
-                      alt={user.username}
-                      className="w-16 h-16 rounded-full border-2 border-mehub-border hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/30 transition-all"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-bold text-mehub-text">{user.username}</h3>
-                        {user.verified && <span className="text-mehub-primary">✓</span>}
-                      </div>
-                      <p className="text-mehub-text-secondary text-sm mt-1">{user.bio}</p>
-                    </div>
-                  </div>
+            {topContributors.map((user) => {
+              const totalDownloads = user.scripts.reduce((sum, script) => sum + script._count.scriptDownloads, 0)
+              const scriptsCount = user._count.scripts
 
-                  <div className="grid grid-cols-3 gap-3 mt-6 pt-6 border-t border-mehub-border">
-                    <div>
-                      <div className="text-xl font-bold text-mehub-primary">{user.stats.scriptsUploaded}</div>
-                      <div className="text-mehub-text-secondary text-xs">Scripts</div>
+              return (
+                <Link key={user.id} href={`/profile/${user.username}`}>
+                  <Card className="bg-mehub-card border-mehub-border hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/30 transition-all cursor-pointer p-6">
+                    <div className="flex items-start gap-4">
+                      <img
+                        src={user.avatar || "/placeholder-user.jpg"}
+                        alt={user.username}
+                        className="w-16 h-16 rounded-full border-2 border-mehub-border hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/30 transition-all"
+                      />
+                      <div className="flex-1">
+                        <h3 className="font-bold text-mehub-text">{user.username}</h3>
+                        <p className="text-mehub-text-secondary text-sm mt-1 line-clamp-2">{user.bio || "RS3 Automation Developer"}</p>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-xl font-bold text-mehub-secondary">{user.stats.totalDownloads}</div>
-                      <div className="text-mehub-text-secondary text-xs">Downloads</div>
+
+                    <div className="grid grid-cols-2 gap-3 mt-6 pt-6 border-t border-mehub-border">
+                      <div>
+                        <div className="text-xl font-bold text-mehub-primary">{scriptsCount}</div>
+                        <div className="text-mehub-text-secondary text-xs">Scripts</div>
+                      </div>
+                      <div>
+                        <div className="text-xl font-bold text-mehub-secondary">{totalDownloads}</div>
+                        <div className="text-mehub-text-secondary text-xs">Downloads</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-xl font-bold text-mehub-success">{user.stats.averageRating}</div>
-                      <div className="text-mehub-text-secondary text-xs">Rating</div>
-                    </div>
-                  </div>
-                </Card>
-              </Link>
-            ))}
+                  </Card>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>

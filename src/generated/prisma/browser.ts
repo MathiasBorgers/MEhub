@@ -62,3 +62,8 @@ export type File = Prisma.FileModel
  * 
  */
 export type Download = Prisma.DownloadModel
+/**
+ * Model ScriptLike
+ * 
+ */
+export type ScriptLike = Prisma.ScriptLikeModel

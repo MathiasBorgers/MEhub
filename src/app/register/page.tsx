@@ -5,11 +5,21 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Mail, Lock, User } from "lucide-react"
-import { registerAction } from "@/app/actions"
-import { useActionState } from "react"
+import { registerAction } from "@/serverFunctions/users"
+import { useActionState, useEffect, useRef } from "react"
 
 export default function RegisterPage() {
-  const [state, formAction, pending] = useActionState(registerAction, null)
+  const [state, formAction, pending] = useActionState(registerAction, { success: false })
+  const hasRedirected = useRef(false)
+
+  // Check for successful registration and redirect (only once)
+  useEffect(() => {
+    if (state?.success === true && !hasRedirected.current && !pending) {
+      hasRedirected.current = true
+      // Gebruik window.location voor een volledige pagina refresh na registratie
+      window.location.href = '/dashboard'
+    }
+  }, [state, pending])
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -27,9 +37,16 @@ export default function RegisterPage() {
           <Card className="bg-mehub-card border-mehub-border p-8 mb-6">
             <form action={formAction} className="space-y-5">
               {/* Error Message */}
-              {state?.error && (
+              {state?.errors && !state.success && (
                 <div className="p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-sm">
-                  {state.error}
+                  {state.errors.errors?.[0] || 'An error occurred'}
+                </div>
+              )}
+
+              {/* Success Message */}
+              {state?.success && (
+                <div className="p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 text-sm">
+                  Account created successfully! Redirecting...
                 </div>
               )}
 
@@ -43,7 +60,8 @@ export default function RegisterPage() {
                     name="username"
                     placeholder="Your username"
                     required
-                    disabled={pending}
+                    disabled={pending || state?.success}
+                    defaultValue={state?.submittedData?.username}
                     className="w-full pl-10 pr-4 py-3 bg-mehub-bg border border-mehub-border rounded-lg text-mehub-text placeholder-mehub-text-secondary focus:border-mehub-primary focus:ring-1 focus:ring-mehub-primary outline-none transition-colors disabled:opacity-50"
                   />
                 </div>
@@ -59,7 +77,8 @@ export default function RegisterPage() {
                     name="email"
                     placeholder="you@example.com"
                     required
-                    disabled={pending}
+                    disabled={pending || state?.success}
+                    defaultValue={state?.submittedData?.email}
                     className="w-full pl-10 pr-4 py-3 bg-mehub-bg border border-mehub-border rounded-lg text-mehub-text placeholder-mehub-text-secondary focus:border-mehub-primary focus:ring-1 focus:ring-mehub-primary outline-none transition-colors disabled:opacity-50"
                   />
                 </div>
@@ -75,7 +94,7 @@ export default function RegisterPage() {
                     name="password"
                     placeholder="••••••••"
                     required
-                    disabled={pending}
+                    disabled={pending || state?.success}
                     className="w-full pl-10 pr-4 py-3 bg-mehub-bg border border-mehub-border rounded-lg text-mehub-text placeholder-mehub-text-secondary focus:border-mehub-primary focus:ring-1 focus:ring-mehub-primary outline-none transition-colors disabled:opacity-50"
                   />
                 </div>
@@ -88,50 +107,22 @@ export default function RegisterPage() {
                   <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-white" />
                   <input
                     type="password"
-                    name="confirmPassword"
+                    name="passwordConfirmation"
                     placeholder="••••••••"
                     required
-                    disabled={pending}
+                    disabled={pending || state?.success}
                     className="w-full pl-10 pr-4 py-3 bg-mehub-bg border border-mehub-border rounded-lg text-mehub-text placeholder-mehub-text-secondary focus:border-mehub-primary focus:ring-1 focus:ring-mehub-primary outline-none transition-colors disabled:opacity-50"
                   />
-                </div>
-              </div>
-
-              {/* Account Type */}
-              <div>
-                <label className="block text-mehub-text font-medium mb-2">Account Type</label>
-                <div className="grid grid-cols-2 gap-3">
-                  <label className="flex items-center p-3 border border-mehub-border rounded-lg cursor-pointer hover:border-mehub-primary transition-colors">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="Developer"
-                      defaultChecked
-                      disabled={pending}
-                      className="mr-2 text-mehub-primary focus:ring-mehub-primary"
-                    />
-                    <span className="text-mehub-text text-sm">Developer</span>
-                  </label>
-                  <label className="flex items-center p-3 border border-mehub-border rounded-lg cursor-pointer hover:border-mehub-primary transition-colors">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="User"
-                      disabled={pending}
-                      className="mr-2 text-mehub-primary focus:ring-mehub-primary"
-                    />
-                    <span className="text-mehub-text text-sm">User</span>
-                  </label>
                 </div>
               </div>
 
               {/* Submit Button */}
               <Button
                 type="submit"
-                disabled={pending}
+                disabled={pending || state?.success}
                 className="w-full border border-mehub-border bg-mehub-primary text-mehub-bg hover:bg-orange-500 hover:border-orange-500 hover:text-white transition-all disabled:opacity-50"
               >
-                {pending ? 'Creating Account...' : 'Create Account'}
+                {pending ? 'Creating Account...' : state?.success ? 'Redirecting...' : 'Create Account'}
               </Button>
             </form>
           </Card>

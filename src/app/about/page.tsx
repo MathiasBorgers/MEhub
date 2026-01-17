@@ -70,15 +70,15 @@ export default function AboutPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { name: "Combat Scripts", emoji: "⚔️", desc: "Revolution++, Legacy, manual combat automation" },
-              { name: "Skilling Scripts", emoji: "⛏️", desc: "Mining, smithing, archaeology, divination & more" },
-              { name: "Farming Scripts", emoji: "🌾", desc: "Player-owned farm, herb runs, tree runs" },
-              { name: "Bossing Scripts", emoji: "👹", desc: "Araxxor, Telos, Raksha, ED1/2/3, Arch-Glacor" },
-              { name: "Slayer Scripts", emoji: "🗡️", desc: "Task automation and efficient monster farming" },
-              { name: "Money Making Scripts", emoji: "💰", desc: "PVM methods, skilling-based income" },
-              { name: "Dungeoneering", emoji: "🏰", desc: "Token farming and efficient floor rushing" },
-              { name: "Minigames", emoji: "🎮", desc: "Cabbage Facepunch, Shattered Worlds & others" },
-              { name: "Utilities", emoji: "🔧", desc: "Banking, presets, invention helpers" },
+              { name: "Combat Scripts", emoji: "⚔️", desc: "Revolution++, Legacy, manual combat automation & more" },
+              { name: "Skilling Scripts", emoji: "⛏️", desc: "Mining, smithing, archaeology, divination & many others" },
+              { name: "Farming Scripts", emoji: "🌾", desc: "Player-owned farm, herb runs, tree runs & more" },
+              { name: "Bossing Scripts", emoji: "👹", desc: "Araxxor, Telos, Raksha, ED1/2/3, Arch-Glacor & many others" },
+              { name: "Slayer Scripts", emoji: "🗡️", desc: "Task automation, efficient monster farming & more" },
+              { name: "Money Making Scripts", emoji: "💰", desc: "PVM methods, skilling-based income & many others" },
+              { name: "Dungeoneering", emoji: "🏰", desc: "Token farming, efficient floor rushing & more" },
+              { name: "Minigames", emoji: "🎮", desc: "Cabbage Facepunch, Shattered Worlds & many others" },
+              { name: "Utilities", emoji: "🔧", desc: "Banking, presets, invention helpers & more" },
             ].map((category) => (
               <Card key={category.name} className="bg-mehub-card border-mehub-border p-6">
                 <div className="text-4xl mb-3">{category.emoji}</div>
@@ -86,6 +86,12 @@ export default function AboutPage() {
                 <p className="text-mehub-text-secondary text-sm">{category.desc}</p>
               </Card>
             ))}
+          </div>
+
+          <div className="text-center mt-8">
+            <p className="text-mehub-text-secondary text-lg">
+              ...and many more categories to explore in the marketplace!
+            </p>
           </div>
         </div>
       </section>

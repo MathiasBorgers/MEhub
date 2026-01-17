@@ -50,6 +50,7 @@ export type ScriptMinAggregateOutputType = {
   authorId: string | null
   categoryId: string | null
   isActive: boolean | null
+  luaContent: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +67,7 @@ export type ScriptMaxAggregateOutputType = {
   authorId: string | null
   categoryId: string | null
   isActive: boolean | null
+  luaContent: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -85,6 +87,7 @@ export type ScriptCountAggregateOutputType = {
   features: number
   screenshots: number
   isActive: number
+  luaContent: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -115,6 +118,7 @@ export type ScriptMinAggregateInputType = {
   authorId?: true
   categoryId?: true
   isActive?: true
+  luaContent?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -131,6 +135,7 @@ export type ScriptMaxAggregateInputType = {
   authorId?: true
   categoryId?: true
   isActive?: true
+  luaContent?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -150,6 +155,7 @@ export type ScriptCountAggregateInputType = {
   features?: true
   screenshots?: true
   isActive?: true
+  luaContent?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -256,6 +262,7 @@ export type ScriptGroupByOutputType = {
   features: string[]
   screenshots: string[]
   isActive: boolean
+  luaContent: string | null
   createdAt: Date
   updatedAt: Date
   _count: ScriptCountAggregateOutputType | null
@@ -298,6 +305,7 @@ export type ScriptWhereInput = {
   features?: Prisma.StringNullableListFilter<"Script">
   screenshots?: Prisma.StringNullableListFilter<"Script">
   isActive?: Prisma.BoolFilter<"Script"> | boolean
+  luaContent?: Prisma.StringNullableFilter<"Script"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Script"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Script"> | Date | string
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -306,6 +314,7 @@ export type ScriptWhereInput = {
   reviews?: Prisma.ReviewListRelationFilter
   files?: Prisma.FileListRelationFilter
   scriptDownloads?: Prisma.DownloadListRelationFilter
+  likes?: Prisma.ScriptLikeListRelationFilter
 }
 
 export type ScriptOrderByWithRelationInput = {
@@ -323,6 +332,7 @@ export type ScriptOrderByWithRelationInput = {
   features?: Prisma.SortOrder
   screenshots?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  luaContent?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   author?: Prisma.UserOrderByWithRelationInput
@@ -331,6 +341,7 @@ export type ScriptOrderByWithRelationInput = {
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   files?: Prisma.FileOrderByRelationAggregateInput
   scriptDownloads?: Prisma.DownloadOrderByRelationAggregateInput
+  likes?: Prisma.ScriptLikeOrderByRelationAggregateInput
 }
 
 export type ScriptWhereUniqueInput = Prisma.AtLeast<{
@@ -351,6 +362,7 @@ export type ScriptWhereUniqueInput = Prisma.AtLeast<{
   features?: Prisma.StringNullableListFilter<"Script">
   screenshots?: Prisma.StringNullableListFilter<"Script">
   isActive?: Prisma.BoolFilter<"Script"> | boolean
+  luaContent?: Prisma.StringNullableFilter<"Script"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Script"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Script"> | Date | string
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -359,6 +371,7 @@ export type ScriptWhereUniqueInput = Prisma.AtLeast<{
   reviews?: Prisma.ReviewListRelationFilter
   files?: Prisma.FileListRelationFilter
   scriptDownloads?: Prisma.DownloadListRelationFilter
+  likes?: Prisma.ScriptLikeListRelationFilter
 }, "id" | "id">
 
 export type ScriptOrderByWithAggregationInput = {
@@ -376,6 +389,7 @@ export type ScriptOrderByWithAggregationInput = {
   features?: Prisma.SortOrder
   screenshots?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  luaContent?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ScriptCountOrderByAggregateInput
@@ -403,6 +417,7 @@ export type ScriptScalarWhereWithAggregatesInput = {
   features?: Prisma.StringNullableListFilter<"Script">
   screenshots?: Prisma.StringNullableListFilter<"Script">
   isActive?: Prisma.BoolWithAggregatesFilter<"Script"> | boolean
+  luaContent?: Prisma.StringNullableWithAggregatesFilter<"Script"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Script"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Script"> | Date | string
 }
@@ -420,6 +435,7 @@ export type ScriptCreateInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutScriptsInput
@@ -428,6 +444,7 @@ export type ScriptCreateInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutScriptInput
   files?: Prisma.FileCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptUncheckedCreateInput = {
@@ -445,12 +462,14 @@ export type ScriptUncheckedCreateInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tags?: Prisma.ScriptTagUncheckedCreateNestedManyWithoutScriptInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutScriptInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptUpdateInput = {
@@ -466,6 +485,7 @@ export type ScriptUpdateInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutScriptsNestedInput
@@ -474,6 +494,7 @@ export type ScriptUpdateInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptUncheckedUpdateInput = {
@@ -491,12 +512,14 @@ export type ScriptUncheckedUpdateInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tags?: Prisma.ScriptTagUncheckedUpdateManyWithoutScriptNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUncheckedUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptCreateManyInput = {
@@ -514,6 +537,7 @@ export type ScriptCreateManyInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -531,6 +555,7 @@ export type ScriptUpdateManyMutationInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -550,6 +575,7 @@ export type ScriptUncheckedUpdateManyInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -587,6 +613,7 @@ export type ScriptCountOrderByAggregateInput = {
   features?: Prisma.SortOrder
   screenshots?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  luaContent?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -609,6 +636,7 @@ export type ScriptMaxOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  luaContent?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -625,6 +653,7 @@ export type ScriptMinOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  luaContent?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -767,6 +796,10 @@ export type ScriptUpdatescreenshotsInput = {
   push?: string | string[]
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type ScriptCreateNestedOneWithoutTagsInput = {
   create?: Prisma.XOR<Prisma.ScriptCreateWithoutTagsInput, Prisma.ScriptUncheckedCreateWithoutTagsInput>
   connectOrCreate?: Prisma.ScriptCreateOrConnectWithoutTagsInput
@@ -823,6 +856,20 @@ export type ScriptUpdateOneRequiredWithoutScriptDownloadsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ScriptUpdateToOneWithWhereWithoutScriptDownloadsInput, Prisma.ScriptUpdateWithoutScriptDownloadsInput>, Prisma.ScriptUncheckedUpdateWithoutScriptDownloadsInput>
 }
 
+export type ScriptCreateNestedOneWithoutLikesInput = {
+  create?: Prisma.XOR<Prisma.ScriptCreateWithoutLikesInput, Prisma.ScriptUncheckedCreateWithoutLikesInput>
+  connectOrCreate?: Prisma.ScriptCreateOrConnectWithoutLikesInput
+  connect?: Prisma.ScriptWhereUniqueInput
+}
+
+export type ScriptUpdateOneRequiredWithoutLikesNestedInput = {
+  create?: Prisma.XOR<Prisma.ScriptCreateWithoutLikesInput, Prisma.ScriptUncheckedCreateWithoutLikesInput>
+  connectOrCreate?: Prisma.ScriptCreateOrConnectWithoutLikesInput
+  upsert?: Prisma.ScriptUpsertWithoutLikesInput
+  connect?: Prisma.ScriptWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ScriptUpdateToOneWithWhereWithoutLikesInput, Prisma.ScriptUpdateWithoutLikesInput>, Prisma.ScriptUncheckedUpdateWithoutLikesInput>
+}
+
 export type ScriptCreateWithoutAuthorInput = {
   id?: string
   title: string
@@ -836,6 +883,7 @@ export type ScriptCreateWithoutAuthorInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutScriptsInput
@@ -843,6 +891,7 @@ export type ScriptCreateWithoutAuthorInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutScriptInput
   files?: Prisma.FileCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptUncheckedCreateWithoutAuthorInput = {
@@ -859,12 +908,14 @@ export type ScriptUncheckedCreateWithoutAuthorInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tags?: Prisma.ScriptTagUncheckedCreateNestedManyWithoutScriptInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutScriptInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptCreateOrConnectWithoutAuthorInput = {
@@ -911,6 +962,7 @@ export type ScriptScalarWhereInput = {
   features?: Prisma.StringNullableListFilter<"Script">
   screenshots?: Prisma.StringNullableListFilter<"Script">
   isActive?: Prisma.BoolFilter<"Script"> | boolean
+  luaContent?: Prisma.StringNullableFilter<"Script"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Script"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Script"> | Date | string
 }
@@ -928,6 +980,7 @@ export type ScriptCreateWithoutCategoryInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutScriptsInput
@@ -935,6 +988,7 @@ export type ScriptCreateWithoutCategoryInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutScriptInput
   files?: Prisma.FileCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptUncheckedCreateWithoutCategoryInput = {
@@ -951,12 +1005,14 @@ export type ScriptUncheckedCreateWithoutCategoryInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tags?: Prisma.ScriptTagUncheckedCreateNestedManyWithoutScriptInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutScriptInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptCreateOrConnectWithoutCategoryInput = {
@@ -998,6 +1054,7 @@ export type ScriptCreateWithoutTagsInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutScriptsInput
@@ -1005,6 +1062,7 @@ export type ScriptCreateWithoutTagsInput = {
   reviews?: Prisma.ReviewCreateNestedManyWithoutScriptInput
   files?: Prisma.FileCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptUncheckedCreateWithoutTagsInput = {
@@ -1022,11 +1080,13 @@ export type ScriptUncheckedCreateWithoutTagsInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutScriptInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptCreateOrConnectWithoutTagsInput = {
@@ -1058,6 +1118,7 @@ export type ScriptUpdateWithoutTagsInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutScriptsNestedInput
@@ -1065,6 +1126,7 @@ export type ScriptUpdateWithoutTagsInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptUncheckedUpdateWithoutTagsInput = {
@@ -1082,11 +1144,13 @@ export type ScriptUncheckedUpdateWithoutTagsInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUncheckedUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptCreateWithoutReviewsInput = {
@@ -1102,6 +1166,7 @@ export type ScriptCreateWithoutReviewsInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutScriptsInput
@@ -1109,6 +1174,7 @@ export type ScriptCreateWithoutReviewsInput = {
   tags?: Prisma.ScriptTagCreateNestedManyWithoutScriptInput
   files?: Prisma.FileCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptUncheckedCreateWithoutReviewsInput = {
@@ -1126,11 +1192,13 @@ export type ScriptUncheckedCreateWithoutReviewsInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tags?: Prisma.ScriptTagUncheckedCreateNestedManyWithoutScriptInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptCreateOrConnectWithoutReviewsInput = {
@@ -1162,6 +1230,7 @@ export type ScriptUpdateWithoutReviewsInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutScriptsNestedInput
@@ -1169,6 +1238,7 @@ export type ScriptUpdateWithoutReviewsInput = {
   tags?: Prisma.ScriptTagUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptUncheckedUpdateWithoutReviewsInput = {
@@ -1186,11 +1256,13 @@ export type ScriptUncheckedUpdateWithoutReviewsInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tags?: Prisma.ScriptTagUncheckedUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUncheckedUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptCreateWithoutFilesInput = {
@@ -1206,6 +1278,7 @@ export type ScriptCreateWithoutFilesInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutScriptsInput
@@ -1213,6 +1286,7 @@ export type ScriptCreateWithoutFilesInput = {
   tags?: Prisma.ScriptTagCreateNestedManyWithoutScriptInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptUncheckedCreateWithoutFilesInput = {
@@ -1230,11 +1304,13 @@ export type ScriptUncheckedCreateWithoutFilesInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tags?: Prisma.ScriptTagUncheckedCreateNestedManyWithoutScriptInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutScriptInput
   scriptDownloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptCreateOrConnectWithoutFilesInput = {
@@ -1266,6 +1342,7 @@ export type ScriptUpdateWithoutFilesInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutScriptsNestedInput
@@ -1273,6 +1350,7 @@ export type ScriptUpdateWithoutFilesInput = {
   tags?: Prisma.ScriptTagUpdateManyWithoutScriptNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptUncheckedUpdateWithoutFilesInput = {
@@ -1290,11 +1368,13 @@ export type ScriptUncheckedUpdateWithoutFilesInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tags?: Prisma.ScriptTagUncheckedUpdateManyWithoutScriptNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUncheckedUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptCreateWithoutScriptDownloadsInput = {
@@ -1310,6 +1390,7 @@ export type ScriptCreateWithoutScriptDownloadsInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutScriptsInput
@@ -1317,6 +1398,7 @@ export type ScriptCreateWithoutScriptDownloadsInput = {
   tags?: Prisma.ScriptTagCreateNestedManyWithoutScriptInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutScriptInput
   files?: Prisma.FileCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptUncheckedCreateWithoutScriptDownloadsInput = {
@@ -1334,11 +1416,13 @@ export type ScriptUncheckedCreateWithoutScriptDownloadsInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tags?: Prisma.ScriptTagUncheckedCreateNestedManyWithoutScriptInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutScriptInput
   files?: Prisma.FileUncheckedCreateNestedManyWithoutScriptInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutScriptInput
 }
 
 export type ScriptCreateOrConnectWithoutScriptDownloadsInput = {
@@ -1370,6 +1454,7 @@ export type ScriptUpdateWithoutScriptDownloadsInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutScriptsNestedInput
@@ -1377,6 +1462,7 @@ export type ScriptUpdateWithoutScriptDownloadsInput = {
   tags?: Prisma.ScriptTagUpdateManyWithoutScriptNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptUncheckedUpdateWithoutScriptDownloadsInput = {
@@ -1394,11 +1480,125 @@ export type ScriptUncheckedUpdateWithoutScriptDownloadsInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tags?: Prisma.ScriptTagUncheckedUpdateManyWithoutScriptNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutScriptNestedInput
+}
+
+export type ScriptCreateWithoutLikesInput = {
+  id?: string
+  title: string
+  description: string
+  fullDescription: string
+  version: string
+  downloads?: number
+  averageRating?: number | null
+  reviewCount?: number
+  requirements?: Prisma.ScriptCreaterequirementsInput | string[]
+  features?: Prisma.ScriptCreatefeaturesInput | string[]
+  screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
+  isActive?: boolean
+  luaContent?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author: Prisma.UserCreateNestedOneWithoutScriptsInput
+  category: Prisma.CategoryCreateNestedOneWithoutScriptsInput
+  tags?: Prisma.ScriptTagCreateNestedManyWithoutScriptInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutScriptInput
+  files?: Prisma.FileCreateNestedManyWithoutScriptInput
+  scriptDownloads?: Prisma.DownloadCreateNestedManyWithoutScriptInput
+}
+
+export type ScriptUncheckedCreateWithoutLikesInput = {
+  id?: string
+  title: string
+  description: string
+  fullDescription: string
+  version: string
+  downloads?: number
+  averageRating?: number | null
+  reviewCount?: number
+  authorId: string
+  categoryId: string
+  requirements?: Prisma.ScriptCreaterequirementsInput | string[]
+  features?: Prisma.ScriptCreatefeaturesInput | string[]
+  screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
+  isActive?: boolean
+  luaContent?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tags?: Prisma.ScriptTagUncheckedCreateNestedManyWithoutScriptInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutScriptInput
+  files?: Prisma.FileUncheckedCreateNestedManyWithoutScriptInput
+  scriptDownloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutScriptInput
+}
+
+export type ScriptCreateOrConnectWithoutLikesInput = {
+  where: Prisma.ScriptWhereUniqueInput
+  create: Prisma.XOR<Prisma.ScriptCreateWithoutLikesInput, Prisma.ScriptUncheckedCreateWithoutLikesInput>
+}
+
+export type ScriptUpsertWithoutLikesInput = {
+  update: Prisma.XOR<Prisma.ScriptUpdateWithoutLikesInput, Prisma.ScriptUncheckedUpdateWithoutLikesInput>
+  create: Prisma.XOR<Prisma.ScriptCreateWithoutLikesInput, Prisma.ScriptUncheckedCreateWithoutLikesInput>
+  where?: Prisma.ScriptWhereInput
+}
+
+export type ScriptUpdateToOneWithWhereWithoutLikesInput = {
+  where?: Prisma.ScriptWhereInput
+  data: Prisma.XOR<Prisma.ScriptUpdateWithoutLikesInput, Prisma.ScriptUncheckedUpdateWithoutLikesInput>
+}
+
+export type ScriptUpdateWithoutLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  fullDescription?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.StringFieldUpdateOperationsInput | string
+  downloads?: Prisma.IntFieldUpdateOperationsInput | number
+  averageRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  requirements?: Prisma.ScriptUpdaterequirementsInput | string[]
+  features?: Prisma.ScriptUpdatefeaturesInput | string[]
+  screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneRequiredWithoutScriptsNestedInput
+  category?: Prisma.CategoryUpdateOneRequiredWithoutScriptsNestedInput
+  tags?: Prisma.ScriptTagUpdateManyWithoutScriptNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutScriptNestedInput
+  files?: Prisma.FileUpdateManyWithoutScriptNestedInput
+  scriptDownloads?: Prisma.DownloadUpdateManyWithoutScriptNestedInput
+}
+
+export type ScriptUncheckedUpdateWithoutLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  fullDescription?: Prisma.StringFieldUpdateOperationsInput | string
+  version?: Prisma.StringFieldUpdateOperationsInput | string
+  downloads?: Prisma.IntFieldUpdateOperationsInput | number
+  averageRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  requirements?: Prisma.ScriptUpdaterequirementsInput | string[]
+  features?: Prisma.ScriptUpdatefeaturesInput | string[]
+  screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tags?: Prisma.ScriptTagUncheckedUpdateManyWithoutScriptNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutScriptNestedInput
+  files?: Prisma.FileUncheckedUpdateManyWithoutScriptNestedInput
+  scriptDownloads?: Prisma.DownloadUncheckedUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptCreateManyAuthorInput = {
@@ -1415,6 +1615,7 @@ export type ScriptCreateManyAuthorInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1432,6 +1633,7 @@ export type ScriptUpdateWithoutAuthorInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutScriptsNestedInput
@@ -1439,6 +1641,7 @@ export type ScriptUpdateWithoutAuthorInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptUncheckedUpdateWithoutAuthorInput = {
@@ -1455,12 +1658,14 @@ export type ScriptUncheckedUpdateWithoutAuthorInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tags?: Prisma.ScriptTagUncheckedUpdateManyWithoutScriptNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUncheckedUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptUncheckedUpdateManyWithoutAuthorInput = {
@@ -1477,6 +1682,7 @@ export type ScriptUncheckedUpdateManyWithoutAuthorInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1495,6 +1701,7 @@ export type ScriptCreateManyCategoryInput = {
   features?: Prisma.ScriptCreatefeaturesInput | string[]
   screenshots?: Prisma.ScriptCreatescreenshotsInput | string[]
   isActive?: boolean
+  luaContent?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1512,6 +1719,7 @@ export type ScriptUpdateWithoutCategoryInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutScriptsNestedInput
@@ -1519,6 +1727,7 @@ export type ScriptUpdateWithoutCategoryInput = {
   reviews?: Prisma.ReviewUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptUncheckedUpdateWithoutCategoryInput = {
@@ -1535,12 +1744,14 @@ export type ScriptUncheckedUpdateWithoutCategoryInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tags?: Prisma.ScriptTagUncheckedUpdateManyWithoutScriptNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutScriptNestedInput
   files?: Prisma.FileUncheckedUpdateManyWithoutScriptNestedInput
   scriptDownloads?: Prisma.DownloadUncheckedUpdateManyWithoutScriptNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutScriptNestedInput
 }
 
 export type ScriptUncheckedUpdateManyWithoutCategoryInput = {
@@ -1557,6 +1768,7 @@ export type ScriptUncheckedUpdateManyWithoutCategoryInput = {
   features?: Prisma.ScriptUpdatefeaturesInput | string[]
   screenshots?: Prisma.ScriptUpdatescreenshotsInput | string[]
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  luaContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1571,6 +1783,7 @@ export type ScriptCountOutputType = {
   reviews: number
   files: number
   scriptDownloads: number
+  likes: number
 }
 
 export type ScriptCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1578,6 +1791,7 @@ export type ScriptCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   reviews?: boolean | ScriptCountOutputTypeCountReviewsArgs
   files?: boolean | ScriptCountOutputTypeCountFilesArgs
   scriptDownloads?: boolean | ScriptCountOutputTypeCountScriptDownloadsArgs
+  likes?: boolean | ScriptCountOutputTypeCountLikesArgs
 }
 
 /**
@@ -1618,6 +1832,13 @@ export type ScriptCountOutputTypeCountScriptDownloadsArgs<ExtArgs extends runtim
   where?: Prisma.DownloadWhereInput
 }
 
+/**
+ * ScriptCountOutputType without action
+ */
+export type ScriptCountOutputTypeCountLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScriptLikeWhereInput
+}
+
 
 export type ScriptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1634,6 +1855,7 @@ export type ScriptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   features?: boolean
   screenshots?: boolean
   isActive?: boolean
+  luaContent?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1642,6 +1864,7 @@ export type ScriptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   reviews?: boolean | Prisma.Script$reviewsArgs<ExtArgs>
   files?: boolean | Prisma.Script$filesArgs<ExtArgs>
   scriptDownloads?: boolean | Prisma.Script$scriptDownloadsArgs<ExtArgs>
+  likes?: boolean | Prisma.Script$likesArgs<ExtArgs>
   _count?: boolean | Prisma.ScriptCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["script"]>
 
@@ -1660,6 +1883,7 @@ export type ScriptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   features?: boolean
   screenshots?: boolean
   isActive?: boolean
+  luaContent?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1681,6 +1905,7 @@ export type ScriptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   features?: boolean
   screenshots?: boolean
   isActive?: boolean
+  luaContent?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1702,11 +1927,12 @@ export type ScriptSelectScalar = {
   features?: boolean
   screenshots?: boolean
   isActive?: boolean
+  luaContent?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ScriptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "fullDescription" | "version" | "downloads" | "averageRating" | "reviewCount" | "authorId" | "categoryId" | "requirements" | "features" | "screenshots" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["script"]>
+export type ScriptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "fullDescription" | "version" | "downloads" | "averageRating" | "reviewCount" | "authorId" | "categoryId" | "requirements" | "features" | "screenshots" | "isActive" | "luaContent" | "createdAt" | "updatedAt", ExtArgs["result"]["script"]>
 export type ScriptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -1714,6 +1940,7 @@ export type ScriptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   reviews?: boolean | Prisma.Script$reviewsArgs<ExtArgs>
   files?: boolean | Prisma.Script$filesArgs<ExtArgs>
   scriptDownloads?: boolean | Prisma.Script$scriptDownloadsArgs<ExtArgs>
+  likes?: boolean | Prisma.Script$likesArgs<ExtArgs>
   _count?: boolean | Prisma.ScriptCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ScriptIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1734,6 +1961,7 @@ export type $ScriptPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     files: Prisma.$FilePayload<ExtArgs>[]
     scriptDownloads: Prisma.$DownloadPayload<ExtArgs>[]
+    likes: Prisma.$ScriptLikePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1750,6 +1978,7 @@ export type $ScriptPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     features: string[]
     screenshots: string[]
     isActive: boolean
+    luaContent: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["script"]>
@@ -2152,6 +2381,7 @@ export interface Prisma__ScriptClient<T, Null = never, ExtArgs extends runtime.T
   reviews<T extends Prisma.Script$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Script$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   files<T extends Prisma.Script$filesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Script$filesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   scriptDownloads<T extends Prisma.Script$scriptDownloadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Script$scriptDownloadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DownloadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  likes<T extends Prisma.Script$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Script$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScriptLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2195,6 +2425,7 @@ export interface ScriptFieldRefs {
   readonly features: Prisma.FieldRef<"Script", 'String[]'>
   readonly screenshots: Prisma.FieldRef<"Script", 'String[]'>
   readonly isActive: Prisma.FieldRef<"Script", 'Boolean'>
+  readonly luaContent: Prisma.FieldRef<"Script", 'String'>
   readonly createdAt: Prisma.FieldRef<"Script", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Script", 'DateTime'>
 }
@@ -2686,6 +2917,30 @@ export type Script$scriptDownloadsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.DownloadScalarFieldEnum | Prisma.DownloadScalarFieldEnum[]
+}
+
+/**
+ * Script.likes
+ */
+export type Script$likesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScriptLike
+   */
+  select?: Prisma.ScriptLikeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScriptLike
+   */
+  omit?: Prisma.ScriptLikeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScriptLikeInclude<ExtArgs> | null
+  where?: Prisma.ScriptLikeWhereInput
+  orderBy?: Prisma.ScriptLikeOrderByWithRelationInput | Prisma.ScriptLikeOrderByWithRelationInput[]
+  cursor?: Prisma.ScriptLikeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScriptLikeScalarFieldEnum | Prisma.ScriptLikeScalarFieldEnum[]
 }
 
 /**

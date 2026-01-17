@@ -398,7 +398,8 @@ export const ModelName = {
   ScriptTag: 'ScriptTag',
   Review: 'Review',
   File: 'File',
-  Download: 'Download'
+  Download: 'Download',
+  ScriptLike: 'ScriptLike'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "category" | "script" | "tag" | "scriptTag" | "review" | "file" | "download"
+    modelProps: "user" | "session" | "category" | "script" | "tag" | "scriptTag" | "review" | "file" | "download" | "scriptLike"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1084,6 +1085,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ScriptLike: {
+      payload: Prisma.$ScriptLikePayload<ExtArgs>
+      fields: Prisma.ScriptLikeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScriptLikeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScriptLikePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScriptLikeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScriptLikePayload>
+        }
+        findFirst: {
+          args: Prisma.ScriptLikeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScriptLikePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScriptLikeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScriptLikePayload>
+        }
+        findMany: {
+          args: Prisma.ScriptLikeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScriptLikePayload>[]
+        }
+        create: {
+          args: Prisma.ScriptLikeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScriptLikePayload>
+        }
+        createMany: {
+          args: Prisma.ScriptLikeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ScriptLikeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScriptLikePayload>[]
+        }
+        delete: {
+          args: Prisma.ScriptLikeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScriptLikePayload>
+        }
+        update: {
+          args: Prisma.ScriptLikeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScriptLikePayload>
+        }
+        deleteMany: {
+          args: Prisma.ScriptLikeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScriptLikeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ScriptLikeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScriptLikePayload>[]
+        }
+        upsert: {
+          args: Prisma.ScriptLikeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScriptLikePayload>
+        }
+        aggregate: {
+          args: Prisma.ScriptLikeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScriptLike>
+        }
+        groupBy: {
+          args: Prisma.ScriptLikeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScriptLikeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScriptLikeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScriptLikeCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1131,7 +1206,6 @@ export const UserScalarFieldEnum = {
   role: 'role',
   bio: 'bio',
   avatar: 'avatar',
-  verified: 'verified',
   joinDate: 'joinDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1179,6 +1253,7 @@ export const ScriptScalarFieldEnum = {
   features: 'features',
   screenshots: 'screenshots',
   isActive: 'isActive',
+  luaContent: 'luaContent',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1241,6 +1316,16 @@ export const DownloadScalarFieldEnum = {
 export type DownloadScalarFieldEnum = (typeof DownloadScalarFieldEnum)[keyof typeof DownloadScalarFieldEnum]
 
 
+export const ScriptLikeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  scriptId: 'scriptId',
+  createdAt: 'createdAt'
+} as const
+
+export type ScriptLikeScalarFieldEnum = (typeof ScriptLikeScalarFieldEnum)[keyof typeof ScriptLikeScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1300,13 +1385,6 @@ export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -1345,6 +1423,13 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1457,6 +1542,7 @@ export type GlobalOmitConfig = {
   review?: Prisma.ReviewOmit
   file?: Prisma.FileOmit
   download?: Prisma.DownloadOmit
+  scriptLike?: Prisma.ScriptLikeOmit
 }
 
 /* Types for Logging */

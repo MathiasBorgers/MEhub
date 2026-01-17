@@ -2,48 +2,44 @@ import { Header } from "@/components/header"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import Image from "next/image"
 import { Edit2, TrendingUp, Download, Star, Eye } from "lucide-react"
-import { mockScripts, mockUsers, type Script } from "@/lib/mock-data"
 import { DashboardActions } from "@/components/dashboard-actions"
-import { getCurrentUser } from "@/lib/getCurrentUser"
+import { getSessionProfileFromCookie } from "@/lib/sessionUtils"
 import { redirect } from "next/navigation"
+import { getScripts } from "@/dal/scripts"
 
 export default async function DashboardPage() {
-  // Get the actual logged-in user
-  const currentUser = await getCurrentUser()
-  
+  // Get the actual logged-in user from the correct session cookie
+  const currentUser = await getSessionProfileFromCookie()
+
   if (!currentUser) {
     redirect('/login')
   }
   
-  console.log("Dashboard - Current user from JWT:", currentUser)
-  
-  // Find the user in mock data by email (since that's what we have in JWT)
-  const mockUser = Object.values(mockUsers).find(u => u.email === currentUser.email)
-  console.log("Dashboard - Found mock user:", mockUser)
-  
-  let userScripts: Script[] = []
-  let totalStats = { uploads: 0, downloads: 0, avgRating: 0 }
-  
-  if (!mockUser) {
-    console.log("Dashboard - No mock user found, showing empty dashboard")
-    // No scripts for unknown users
-    userScripts = []
-    totalStats = {
-      uploads: 0,
-      downloads: 0,
-      avgRating: 0,
-    }
-  } else {
-    userScripts = mockScripts.filter((s) => s.author.id === mockUser.id)
-    console.log("Dashboard - User scripts found:", userScripts.length)
-    
-    totalStats = {
-      uploads: userScripts.length,
-      downloads: userScripts.reduce((sum, s) => sum + s.downloads, 0),
-      avgRating: Number(mockUser.stats.averageRating.toFixed(1)),
-    }
+  console.log("Dashboard - Current user from session:", currentUser)
+
+  // Check if user is Developer or Admin - only they can have scripts
+  if (currentUser.role !== 'Developer' && currentUser.role !== 'Admin') {
+    // Regular users should not see dashboard
+    redirect('/')
+  }
+
+  // Fetch user's scripts from database
+  const userScripts = await getScripts({
+    authorId: currentUser.id,
+    sortBy: 'createdAt',
+    sortOrder: 'desc'
+  })
+
+  console.log("Dashboard - User scripts found:", userScripts.length)
+
+  // Calculate stats from real data
+  const totalStats = {
+    uploads: userScripts.length,
+    downloads: userScripts.reduce((sum, s) => sum + s._count.scriptDownloads, 0),
+    avgRating: userScripts.length > 0
+      ? Number((userScripts.reduce((sum, s) => sum + (s.averageRating || 0), 0) / userScripts.length).toFixed(1))
+      : 0,
   }
 
   return (
@@ -131,11 +127,10 @@ export default async function DashboardPage() {
                     <tr key={script.id} className="border-b border-mehub-border hover:bg-mehub-bg transition-colors">
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          <Image
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
                             src={script.screenshots[0] || "/placeholder.svg"}
                             alt={script.title}
-                            width={40}
-                            height={40}
                             className="w-10 h-10 rounded object-cover"
                           />
                           <div>
@@ -149,28 +144,30 @@ export default async function DashboardPage() {
                           </div>
                         </div>
                       </td>
-                      <td className="p-4 text-mehub-text">{script.category}</td>
-                      <td className="p-4 text-right text-mehub-text">{script.downloads}</td>
+                      <td className="p-4 text-mehub-text">{script.category.name}</td>
+                      <td className="p-4 text-right text-mehub-text">{script._count.scriptDownloads}</td>
                       <td className="p-4 text-right">
                         <div className="flex items-center justify-end gap-1">
                           <Star size={16} className="text-mehub-secondary" fill="currentColor" />
-                          <span className="text-mehub-text">{script.rating}</span>
+                          <span className="text-mehub-text">{script.averageRating?.toFixed(1) || "N/A"}</span>
                         </div>
                       </td>
                       <td className="p-4 text-right text-mehub-text flex items-center justify-end gap-1">
                         <Eye size={16} className="text-mehub-text-secondary" />
-                        {script.downloads * 2}
+                        {script._count.scriptDownloads}
                       </td>
                       <td className="p-4 text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-mehub-border text-mehub-text hover:bg-mehub-hover bg-transparent"
-                          >
-                            <Edit2 size={16} />
-                          </Button>
-                          <DashboardActions 
+                          <Link href={`/script/${script.id}/edit`}>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-mehub-border text-mehub-text hover:bg-mehub-hover bg-transparent"
+                            >
+                              <Edit2 size={16} />
+                            </Button>
+                          </Link>
+                          <DashboardActions
                             scriptId={script.id}
                             scriptTitle={script.title}
                           />

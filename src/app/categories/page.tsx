@@ -2,9 +2,11 @@ import { Header } from "@/components/header"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { mockCategories } from "@/lib/mock-data"
+import { getCategoriesWithScriptCount } from "@/dal/categories"
 
-export default function CategoriesPage() {
+export default async function CategoriesPage() {
+  const categories = await getCategoriesWithScriptCount()
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -18,12 +20,10 @@ export default function CategoriesPage() {
 
         {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockCategories.map((category) => (
+          {categories.map((category) => (
             <Link key={category.id} href={`/marketplace?category=${encodeURIComponent(category.name)}`}>
               <Card className="bg-mehub-card border-mehub-border hover:border-mehub-primary transition-colors h-full cursor-pointer group">
                 <div className="p-8 text-center space-y-4">
-                  {/* Icon */}
-                  <div className="text-6xl group-hover:scale-110 transition-transform">{category.icon}</div>
 
                   {/* Title */}
                   <h3 className="text-2xl font-bold text-mehub-text">{category.name}</h3>

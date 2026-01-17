@@ -162,9 +162,12 @@ async function handleServerFunction<Schema extends ZodType, ReturnType, Auth ext
 
     logger.trace(`Checking authorization for ${functionName}.`)
     if (authenticated && options.requiredRoles && !options.requiredRoles.includes(profile!.role)) {
-      logger.warn(`Unauthorized user ${profile?.id} tried executing ${functionName ?? 'a server function'}.`)
+      logger.warn(`Unauthorized user ${profile?.id} with role ${profile?.role} tried executing ${functionName ?? 'a server function'}. Required roles: ${options.requiredRoles.join(', ')}`)
       return {
         success: false,
+        errors: {
+          errors: [`You don't have permission to perform this action. Required role: ${options.requiredRoles.join(' or ')}`],
+        },
       }
     }
 

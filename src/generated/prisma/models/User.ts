@@ -32,7 +32,6 @@ export type UserMinAggregateOutputType = {
   role: $Enums.Role | null
   bio: string | null
   avatar: string | null
-  verified: boolean | null
   joinDate: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -46,7 +45,6 @@ export type UserMaxAggregateOutputType = {
   role: $Enums.Role | null
   bio: string | null
   avatar: string | null
-  verified: boolean | null
   joinDate: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -60,7 +58,6 @@ export type UserCountAggregateOutputType = {
   role: number
   bio: number
   avatar: number
-  verified: number
   joinDate: number
   createdAt: number
   updatedAt: number
@@ -76,7 +73,6 @@ export type UserMinAggregateInputType = {
   role?: true
   bio?: true
   avatar?: true
-  verified?: true
   joinDate?: true
   createdAt?: true
   updatedAt?: true
@@ -90,7 +86,6 @@ export type UserMaxAggregateInputType = {
   role?: true
   bio?: true
   avatar?: true
-  verified?: true
   joinDate?: true
   createdAt?: true
   updatedAt?: true
@@ -104,7 +99,6 @@ export type UserCountAggregateInputType = {
   role?: true
   bio?: true
   avatar?: true
-  verified?: true
   joinDate?: true
   createdAt?: true
   updatedAt?: true
@@ -191,7 +185,6 @@ export type UserGroupByOutputType = {
   role: $Enums.Role
   bio: string | null
   avatar: string | null
-  verified: boolean
   joinDate: Date
   createdAt: Date
   updatedAt: Date
@@ -226,7 +219,6 @@ export type UserWhereInput = {
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
-  verified?: Prisma.BoolFilter<"User"> | boolean
   joinDate?: Prisma.DateTimeFilter<"User"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -234,6 +226,7 @@ export type UserWhereInput = {
   scripts?: Prisma.ScriptListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   downloads?: Prisma.DownloadListRelationFilter
+  likes?: Prisma.ScriptLikeListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -244,7 +237,6 @@ export type UserOrderByWithRelationInput = {
   role?: Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
-  verified?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -252,6 +244,7 @@ export type UserOrderByWithRelationInput = {
   scripts?: Prisma.ScriptOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   downloads?: Prisma.DownloadOrderByRelationAggregateInput
+  likes?: Prisma.ScriptLikeOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -265,7 +258,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   avatar?: Prisma.StringNullableFilter<"User"> | string | null
-  verified?: Prisma.BoolFilter<"User"> | boolean
   joinDate?: Prisma.DateTimeFilter<"User"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -273,6 +265,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   scripts?: Prisma.ScriptListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   downloads?: Prisma.DownloadListRelationFilter
+  likes?: Prisma.ScriptLikeListRelationFilter
 }, "id" | "id" | "email" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -283,7 +276,6 @@ export type UserOrderByWithAggregationInput = {
   role?: Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
-  verified?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -303,7 +295,6 @@ export type UserScalarWhereWithAggregatesInput = {
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   avatar?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  verified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   joinDate?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -317,7 +308,6 @@ export type UserCreateInput = {
   role?: $Enums.Role
   bio?: string | null
   avatar?: string | null
-  verified?: boolean
   joinDate?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -325,6 +315,7 @@ export type UserCreateInput = {
   scripts?: Prisma.ScriptCreateNestedManyWithoutAuthorInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   downloads?: Prisma.DownloadCreateNestedManyWithoutUserInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -335,7 +326,6 @@ export type UserUncheckedCreateInput = {
   role?: $Enums.Role
   bio?: string | null
   avatar?: string | null
-  verified?: boolean
   joinDate?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -343,6 +333,7 @@ export type UserUncheckedCreateInput = {
   scripts?: Prisma.ScriptUncheckedCreateNestedManyWithoutAuthorInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   downloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutUserInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -353,7 +344,6 @@ export type UserUpdateInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -361,6 +351,7 @@ export type UserUpdateInput = {
   scripts?: Prisma.ScriptUpdateManyWithoutAuthorNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   downloads?: Prisma.DownloadUpdateManyWithoutUserNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -371,7 +362,6 @@ export type UserUncheckedUpdateInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -379,6 +369,7 @@ export type UserUncheckedUpdateInput = {
   scripts?: Prisma.ScriptUncheckedUpdateManyWithoutAuthorNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   downloads?: Prisma.DownloadUncheckedUpdateManyWithoutUserNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -389,7 +380,6 @@ export type UserCreateManyInput = {
   role?: $Enums.Role
   bio?: string | null
   avatar?: string | null
-  verified?: boolean
   joinDate?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -403,7 +393,6 @@ export type UserUpdateManyMutationInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -417,7 +406,6 @@ export type UserUncheckedUpdateManyInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -431,7 +419,6 @@ export type UserCountOrderByAggregateInput = {
   role?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
-  verified?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -445,7 +432,6 @@ export type UserMaxOrderByAggregateInput = {
   role?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
-  verified?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -459,7 +445,6 @@ export type UserMinOrderByAggregateInput = {
   role?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
-  verified?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -480,10 +465,6 @@ export type EnumRoleFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -546,6 +527,20 @@ export type UserUpdateOneRequiredWithoutDownloadsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDownloadsInput, Prisma.UserUpdateWithoutDownloadsInput>, Prisma.UserUncheckedUpdateWithoutDownloadsInput>
 }
 
+export type UserCreateNestedOneWithoutLikesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLikesInput, Prisma.UserUncheckedCreateWithoutLikesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLikesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutLikesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLikesInput, Prisma.UserUncheckedCreateWithoutLikesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLikesInput
+  upsert?: Prisma.UserUpsertWithoutLikesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLikesInput, Prisma.UserUpdateWithoutLikesInput>, Prisma.UserUncheckedUpdateWithoutLikesInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id?: string
   email: string
@@ -554,13 +549,13 @@ export type UserCreateWithoutSessionsInput = {
   role?: $Enums.Role
   bio?: string | null
   avatar?: string | null
-  verified?: boolean
   joinDate?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   scripts?: Prisma.ScriptCreateNestedManyWithoutAuthorInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   downloads?: Prisma.DownloadCreateNestedManyWithoutUserInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -571,13 +566,13 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   role?: $Enums.Role
   bio?: string | null
   avatar?: string | null
-  verified?: boolean
   joinDate?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   scripts?: Prisma.ScriptUncheckedCreateNestedManyWithoutAuthorInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   downloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutUserInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -604,13 +599,13 @@ export type UserUpdateWithoutSessionsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scripts?: Prisma.ScriptUpdateManyWithoutAuthorNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   downloads?: Prisma.DownloadUpdateManyWithoutUserNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -621,13 +616,13 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scripts?: Prisma.ScriptUncheckedUpdateManyWithoutAuthorNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   downloads?: Prisma.DownloadUncheckedUpdateManyWithoutUserNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutScriptsInput = {
@@ -638,13 +633,13 @@ export type UserCreateWithoutScriptsInput = {
   role?: $Enums.Role
   bio?: string | null
   avatar?: string | null
-  verified?: boolean
   joinDate?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
   downloads?: Prisma.DownloadCreateNestedManyWithoutUserInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutScriptsInput = {
@@ -655,13 +650,13 @@ export type UserUncheckedCreateWithoutScriptsInput = {
   role?: $Enums.Role
   bio?: string | null
   avatar?: string | null
-  verified?: boolean
   joinDate?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   downloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutUserInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutScriptsInput = {
@@ -688,13 +683,13 @@ export type UserUpdateWithoutScriptsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   downloads?: Prisma.DownloadUpdateManyWithoutUserNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutScriptsInput = {
@@ -705,13 +700,13 @@ export type UserUncheckedUpdateWithoutScriptsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   downloads?: Prisma.DownloadUncheckedUpdateManyWithoutUserNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReviewsInput = {
@@ -722,13 +717,13 @@ export type UserCreateWithoutReviewsInput = {
   role?: $Enums.Role
   bio?: string | null
   avatar?: string | null
-  verified?: boolean
   joinDate?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   scripts?: Prisma.ScriptCreateNestedManyWithoutAuthorInput
   downloads?: Prisma.DownloadCreateNestedManyWithoutUserInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
@@ -739,13 +734,13 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   role?: $Enums.Role
   bio?: string | null
   avatar?: string | null
-  verified?: boolean
   joinDate?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   scripts?: Prisma.ScriptUncheckedCreateNestedManyWithoutAuthorInput
   downloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutUserInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsInput = {
@@ -772,13 +767,13 @@ export type UserUpdateWithoutReviewsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   scripts?: Prisma.ScriptUpdateManyWithoutAuthorNestedInput
   downloads?: Prisma.DownloadUpdateManyWithoutUserNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -789,13 +784,13 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   scripts?: Prisma.ScriptUncheckedUpdateManyWithoutAuthorNestedInput
   downloads?: Prisma.DownloadUncheckedUpdateManyWithoutUserNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDownloadsInput = {
@@ -806,13 +801,13 @@ export type UserCreateWithoutDownloadsInput = {
   role?: $Enums.Role
   bio?: string | null
   avatar?: string | null
-  verified?: boolean
   joinDate?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   scripts?: Prisma.ScriptCreateNestedManyWithoutAuthorInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  likes?: Prisma.ScriptLikeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDownloadsInput = {
@@ -823,13 +818,13 @@ export type UserUncheckedCreateWithoutDownloadsInput = {
   role?: $Enums.Role
   bio?: string | null
   avatar?: string | null
-  verified?: boolean
   joinDate?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   scripts?: Prisma.ScriptUncheckedCreateNestedManyWithoutAuthorInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  likes?: Prisma.ScriptLikeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDownloadsInput = {
@@ -856,13 +851,13 @@ export type UserUpdateWithoutDownloadsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   scripts?: Prisma.ScriptUpdateManyWithoutAuthorNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  likes?: Prisma.ScriptLikeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDownloadsInput = {
@@ -873,13 +868,97 @@ export type UserUncheckedUpdateWithoutDownloadsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   scripts?: Prisma.ScriptUncheckedUpdateManyWithoutAuthorNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  likes?: Prisma.ScriptLikeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutLikesInput = {
+  id?: string
+  email: string
+  password: string
+  username: string
+  role?: $Enums.Role
+  bio?: string | null
+  avatar?: string | null
+  joinDate?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  scripts?: Prisma.ScriptCreateNestedManyWithoutAuthorInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  downloads?: Prisma.DownloadCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutLikesInput = {
+  id?: string
+  email: string
+  password: string
+  username: string
+  role?: $Enums.Role
+  bio?: string | null
+  avatar?: string | null
+  joinDate?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  scripts?: Prisma.ScriptUncheckedCreateNestedManyWithoutAuthorInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  downloads?: Prisma.DownloadUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutLikesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLikesInput, Prisma.UserUncheckedCreateWithoutLikesInput>
+}
+
+export type UserUpsertWithoutLikesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLikesInput, Prisma.UserUncheckedUpdateWithoutLikesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLikesInput, Prisma.UserUncheckedCreateWithoutLikesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLikesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLikesInput, Prisma.UserUncheckedUpdateWithoutLikesInput>
+}
+
+export type UserUpdateWithoutLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  scripts?: Prisma.ScriptUpdateManyWithoutAuthorNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  downloads?: Prisma.DownloadUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  scripts?: Prisma.ScriptUncheckedUpdateManyWithoutAuthorNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  downloads?: Prisma.DownloadUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -892,6 +971,7 @@ export type UserCountOutputType = {
   scripts: number
   reviews: number
   downloads: number
+  likes: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -899,6 +979,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   scripts?: boolean | UserCountOutputTypeCountScriptsArgs
   reviews?: boolean | UserCountOutputTypeCountReviewsArgs
   downloads?: boolean | UserCountOutputTypeCountDownloadsArgs
+  likes?: boolean | UserCountOutputTypeCountLikesArgs
 }
 
 /**
@@ -939,6 +1020,13 @@ export type UserCountOutputTypeCountDownloadsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.DownloadWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScriptLikeWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -948,7 +1036,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   role?: boolean
   bio?: boolean
   avatar?: boolean
-  verified?: boolean
   joinDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -956,6 +1043,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   scripts?: boolean | Prisma.User$scriptsArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   downloads?: boolean | Prisma.User$downloadsArgs<ExtArgs>
+  likes?: boolean | Prisma.User$likesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -967,7 +1055,6 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   role?: boolean
   bio?: boolean
   avatar?: boolean
-  verified?: boolean
   joinDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -981,7 +1068,6 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   role?: boolean
   bio?: boolean
   avatar?: boolean
-  verified?: boolean
   joinDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -995,18 +1081,18 @@ export type UserSelectScalar = {
   role?: boolean
   bio?: boolean
   avatar?: boolean
-  verified?: boolean
   joinDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "username" | "role" | "bio" | "avatar" | "verified" | "joinDate" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "username" | "role" | "bio" | "avatar" | "joinDate" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   scripts?: boolean | Prisma.User$scriptsArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   downloads?: boolean | Prisma.User$downloadsArgs<ExtArgs>
+  likes?: boolean | Prisma.User$likesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1019,6 +1105,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     scripts: Prisma.$ScriptPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     downloads: Prisma.$DownloadPayload<ExtArgs>[]
+    likes: Prisma.$ScriptLikePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1028,7 +1115,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     role: $Enums.Role
     bio: string | null
     avatar: string | null
-    verified: boolean
     joinDate: Date
     createdAt: Date
     updatedAt: Date
@@ -1430,6 +1516,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   scripts<T extends Prisma.User$scriptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$scriptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScriptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   downloads<T extends Prisma.User$downloadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$downloadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DownloadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  likes<T extends Prisma.User$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScriptLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1466,7 +1553,6 @@ export interface UserFieldRefs {
   readonly role: Prisma.FieldRef<"User", 'Role'>
   readonly bio: Prisma.FieldRef<"User", 'String'>
   readonly avatar: Prisma.FieldRef<"User", 'String'>
-  readonly verified: Prisma.FieldRef<"User", 'Boolean'>
   readonly joinDate: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
@@ -1951,6 +2037,30 @@ export type User$downloadsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.DownloadScalarFieldEnum | Prisma.DownloadScalarFieldEnum[]
+}
+
+/**
+ * User.likes
+ */
+export type User$likesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScriptLike
+   */
+  select?: Prisma.ScriptLikeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScriptLike
+   */
+  omit?: Prisma.ScriptLikeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScriptLikeInclude<ExtArgs> | null
+  where?: Prisma.ScriptLikeWhereInput
+  orderBy?: Prisma.ScriptLikeOrderByWithRelationInput | Prisma.ScriptLikeOrderByWithRelationInput[]
+  cursor?: Prisma.ScriptLikeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScriptLikeScalarFieldEnum | Prisma.ScriptLikeScalarFieldEnum[]
 }
 
 /**

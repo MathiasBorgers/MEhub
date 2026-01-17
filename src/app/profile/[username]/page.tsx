@@ -1,13 +1,14 @@
 import React from "react"
 import { Header } from "@/components/header"
-import { Button } from "@/components/ui/button"
-import { Star, Mail, LinkIcon } from "lucide-react"
-import { mockUsers } from "@/lib/mock-data"
+import { Star } from "lucide-react"
 import { ProfileTabs } from "@/components/profile-tabs"
+import { getUserByUsername } from "@/dal/users"
+import { getScripts } from "@/dal/scripts"
+import { getReviews } from "@/dal/reviews"
 
 export default async function ProfilePage({ params }: { params: Promise<{ username: string }> }) {
   const resolvedParams = await params
-  const user = Object.values(mockUsers).find((u) => u.username === resolvedParams.username)
+  const user = await getUserByUsername(resolvedParams.username)
 
   if (!user) {
     return (
@@ -18,6 +19,26 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
         </div>
       </div>
     )
+  }
+
+  // Get user's scripts and reviews
+  const [userScripts, userReviews] = await Promise.all([
+    getScripts({
+      authorId: user.id,
+      isActive: true,
+    }),
+    getReviews({
+      userId: user.id,
+    })
+  ])
+
+  // Calculate stats from real data
+  const stats = {
+    scriptsUploaded: userScripts.length,
+    totalDownloads: userScripts.reduce((sum, script) => sum + script._count.scriptDownloads, 0),
+    averageRating: userScripts.length > 0
+      ? (userScripts.reduce((sum, script) => sum + (script.averageRating || 0), 0) / userScripts.length).toFixed(1)
+      : "N/A",
   }
 
   return (
@@ -37,47 +58,29 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
 
             {/* Info */}
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <h1 className="text-4xl font-bold text-mehub-text">{user.username}</h1>
-                {user.verified && <span className="text-mehub-primary text-2xl">✓</span>}
-              </div>
+              <h1 className="text-4xl font-bold text-mehub-text mb-2">{user.username}</h1>
               <p className="text-mehub-text-secondary mb-4">{user.bio}</p>
               <p className="text-mehub-text-secondary text-sm mb-4">
                 Joined {new Date(user.joinDate).toLocaleDateString("en-US", { year: "numeric", month: "long" })}
               </p>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-3 gap-6 mb-6">
+              <div className="grid grid-cols-3 gap-6">
                 <div>
-                  <div className="text-3xl font-bold text-mehub-primary">{user.stats.scriptsUploaded}</div>
+                  <div className="text-3xl font-bold text-mehub-primary">{stats.scriptsUploaded}</div>
                   <div className="text-mehub-text-secondary text-sm">Scripts Uploaded</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-mehub-secondary">{user.stats.totalDownloads}</div>
+                  <div className="text-3xl font-bold text-mehub-secondary">{stats.totalDownloads}</div>
                   <div className="text-mehub-text-secondary text-sm">Total Downloads</div>
                 </div>
                 <div>
                   <div className="flex items-center gap-1">
-                    <span className="text-3xl font-bold text-mehub-success">{user.stats.averageRating}</span>
-                    <Star size={24} className="text-mehub-success" fill="currentColor" />
+                    <span className="text-3xl font-bold text-mehub-success">{stats.averageRating}</span>
+                    {stats.averageRating !== "N/A" && <Star size={24} className="text-mehub-success" fill="currentColor" />}
                   </div>
                   <div className="text-mehub-text-secondary text-sm">Avg Rating</div>
                 </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-3">
-                <Button className="bg-mehub-primary text-mehub-bg hover:bg-mehub-primary/90 flex items-center gap-2">
-                  <Mail size={18} />
-                  Contact
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-mehub-border text-mehub-text hover:bg-mehub-hover flex items-center gap-2 bg-transparent"
-                >
-                  <LinkIcon size={18} />
-                  Copy Profile
-                </Button>
               </div>
             </div>
           </div>
@@ -85,7 +88,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
       </div>
 
       {/* Profile Tabs */}
-      <ProfileTabs userId={user.id} />
+      <ProfileTabs scripts={userScripts} reviews={userReviews} />
 
       {/* Footer */}
       <footer className="border-t border-mehub-border bg-mehub-card/50 py-8 px-4 sm:px-6 lg:px-8 mt-16">
@@ -96,3 +99,4 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
     </div>
   )
 }
+

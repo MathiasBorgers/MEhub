@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { User, LogOut, Settings, Upload } from "lucide-react"
-import { logoutAction } from "@/app/actions"
+import { User, LogOut, Settings, Upload, Shield } from "lucide-react"
+import { signOutServerFunction } from "@/serverFunctions/users"
 import Link from "next/link"
 import type { Profile } from "@/models/users"
 
@@ -12,6 +12,16 @@ interface UserMenuProps {
 
 export function UserMenu({ user }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
+
+  const handleLogout = async () => {
+    try {
+      await signOutServerFunction()
+      // Client-side redirect after successful logout
+      window.location.href = '/'
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
 
   return (
     <div className="relative">
@@ -56,39 +66,53 @@ export function UserMenu({ user }: UserMenuProps) {
                 className="flex items-center gap-3 px-4 py-2 text-mehub-text hover:bg-mehub-bg transition-colors"
                 onClick={() => setIsOpen(false)}
               >
-                <User size={16} />
-                Profile
+                <User size={18} />
+                <span>Profile</span>
               </Link>
               
-              <Link
-                href="/upload"
-                className="flex items-center gap-3 px-4 py-2 text-mehub-text hover:bg-mehub-bg transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                <Upload size={16} />
-                Upload Script
-              </Link>
-              
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-3 px-4 py-2 text-mehub-text hover:bg-mehub-bg transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                <Settings size={16} />
-                Dashboard
-              </Link>
-
-              <div className="border-t border-mehub-border my-2" />
-              
-              <form action={logoutAction} className="w-full">
-                <button
-                  type="submit"
-                  className="flex items-center gap-3 px-4 py-2 text-red-400 hover:bg-mehub-bg transition-colors w-full text-left"
+              {(user.role === 'Developer' || user.role === 'Admin') && (
+                <Link
+                  href="/upload"
+                  className="flex items-center gap-3 px-4 py-2 text-mehub-text hover:bg-mehub-bg transition-colors"
+                  onClick={() => setIsOpen(false)}
                 >
-                  <LogOut size={16} />
-                  Sign Out
-                </button>
-              </form>
+                  <Upload size={18} />
+                  <span>Upload Script</span>
+                </Link>
+              )}
+
+              {(user.role === 'Developer' || user.role === 'Admin') && (
+                <Link
+                  href="/dashboard"
+                  className="flex items-center gap-3 px-4 py-2 text-mehub-text hover:bg-mehub-bg transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Settings size={18} />
+                  <span>Dashboard</span>
+                </Link>
+              )}
+
+              {user.role === 'Admin' && (
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-3 px-4 py-2 text-orange-500 hover:bg-mehub-bg transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Shield size={18} />
+                  <span>Admin Panel</span>
+                </Link>
+              )}
+            </div>
+
+            {/* Logout */}
+            <div className="pt-2 border-t border-mehub-border">
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-3 px-4 py-2 text-red-400 hover:bg-mehub-bg transition-colors w-full"
+              >
+                <LogOut size={18} />
+                <span>Logout</span>
+              </button>
             </div>
           </div>
         </>

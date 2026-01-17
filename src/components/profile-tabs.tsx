@@ -4,22 +4,16 @@ import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
 import { Star, Download } from "lucide-react"
-import { mockScripts } from "@/lib/mock-data"
+import type { ScriptWithRelations } from "@/dal/scripts"
+import type { ReviewWithUser } from "@/dal/reviews"
 
 interface ProfileTabsProps {
-  userId: string
+  scripts: ScriptWithRelations[]
+  reviews: ReviewWithUser[]
 }
 
-export function ProfileTabs({ userId }: ProfileTabsProps) {
+export function ProfileTabs({ scripts, reviews }: ProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<"scripts" | "reviews">("scripts")
-  
-  // Get user's scripts
-  console.log("ProfileTabs - Looking for scripts by userId:", userId)
-  const userScripts = mockScripts.filter((s) => {
-    console.log(`Script "${s.title}" has author ID: ${s.author.id}, match: ${s.author.id === userId}`)
-    return s.author.id === userId
-  })
-  console.log("ProfileTabs - Found scripts:", userScripts.length)
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -33,7 +27,7 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
               : "text-mehub-text-secondary border-transparent hover:text-mehub-text"
           }`}
         >
-          Scripts ({userScripts.length})
+          Scripts ({scripts.length})
         </button>
         <button
           onClick={() => setActiveTab("reviews")}
@@ -43,14 +37,14 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
               : "text-mehub-text-secondary border-transparent hover:text-mehub-text"
           }`}
         >
-          Reviews (0)
+          Reviews ({reviews.length})
         </button>
       </div>
 
       {/* Tab Content */}
       {activeTab === "scripts" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {userScripts.map((script) => (
+          {scripts.map((script) => (
             <Link key={script.id} href={`/script/${script.id}`}>
               <Card className="group cursor-pointer bg-mehub-card border-mehub-border hover:border-mehub-primary/50 transition-all duration-200 overflow-hidden">
                 <div className="aspect-video bg-mehub-bg overflow-hidden">
@@ -76,11 +70,11 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
                   <div className="flex items-center justify-between text-sm text-mehub-text-secondary">
                     <div className="flex items-center gap-1">
                       <Star size={14} className="text-orange-400 fill-current" />
-                      <span>{script.rating}</span>
+                      <span>{script.averageRating?.toFixed(1) || "N/A"}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Download size={14} />
-                      <span>{script.downloads}</span>
+                      <span>{script._count.scriptDownloads}</span>
                     </div>
                   </div>
                 </div>
@@ -88,7 +82,7 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
             </Link>
           ))}
           
-          {userScripts.length === 0 && (
+          {scripts.length === 0 && (
             <div className="col-span-full text-center py-12">
               <p className="text-mehub-text-secondary">No scripts published yet</p>
             </div>
@@ -97,8 +91,44 @@ export function ProfileTabs({ userId }: ProfileTabsProps) {
       )}
 
       {activeTab === "reviews" && (
-        <div className="text-center py-12">
-          <p className="text-mehub-text-secondary">No reviews yet</p>
+        <div className="space-y-4">
+          {reviews.map((review) => (
+            <Link key={review.id} href={`/script/${review.scriptId}`}>
+              <Card className="group cursor-pointer bg-mehub-card border-mehub-border hover:border-mehub-primary/50 transition-all duration-200 p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-mehub-text group-hover:text-mehub-primary transition-colors mb-1">
+                      {review.script.title}
+                    </h3>
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <Star
+                          key={i}
+                          size={16}
+                          className={i < review.rating ? "text-orange-400 fill-current" : "text-mehub-border"}
+                        />
+                      ))}
+                      <span className="text-mehub-text-secondary text-sm ml-2">
+                        {review.rating}/5
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-mehub-text-secondary text-sm">
+                    {new Date(review.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+                {review.comment && (
+                  <p className="text-mehub-text-secondary text-sm">{review.comment}</p>
+                )}
+              </Card>
+            </Link>
+          ))}
+
+          {reviews.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-mehub-text-secondary">No reviews yet</p>
+            </div>
+          )}
         </div>
       )}
     </div>

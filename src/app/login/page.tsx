@@ -5,11 +5,21 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Mail, Lock } from "lucide-react"
-import { loginAction } from "@/app/actions"
-import { useActionState } from "react"
+import { signInAction } from "@/serverFunctions/users"
+import { useActionState, useEffect, useRef } from "react"
 
 export default function LoginPage() {
-  const [state, formAction, pending] = useActionState(loginAction, null)
+  const [state, formAction, pending] = useActionState(signInAction, { success: false })
+  const hasRedirected = useRef(false)
+
+  // Check for successful login and redirect (only once)
+  useEffect(() => {
+    if (state?.success === true && !hasRedirected.current && !pending) {
+      hasRedirected.current = true
+      // Gebruik window.location voor een volledige pagina refresh na login
+      window.location.href = '/dashboard'
+    }
+  }, [state, pending])
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -27,9 +37,27 @@ export default function LoginPage() {
           <Card className="bg-mehub-card border-mehub-border p-8 mb-6">
             <form action={formAction} className="space-y-6">
               {/* Error Message */}
-              {state?.error && (
+              {state?.errors && !state.success && (
                 <div className="p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-sm">
-                  {state.error}
+                  <div className="font-semibold mb-1">Login Failed</div>
+                  {state.errors.errors?.map((error, i) => (
+                    <div key={i}>{error}</div>
+                  ))}
+                  {process.env.NODE_ENV === 'development' && (
+                    <details className="mt-2 text-xs opacity-75">
+                      <summary className="cursor-pointer">Debug Info</summary>
+                      <pre className="mt-2 p-2 bg-black/20 rounded overflow-auto">
+                        {JSON.stringify(state, null, 2)}
+                      </pre>
+                    </details>
+                  )}
+                </div>
+              )}
+
+              {/* Success Message */}
+              {state?.success && (
+                <div className="p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 text-sm">
+                  Login successful! Redirecting...
                 </div>
               )}
 
@@ -43,7 +71,8 @@ export default function LoginPage() {
                     name="email"
                     placeholder="you@example.com"
                     required
-                    disabled={pending}
+                    disabled={pending || state?.success}
+                    defaultValue={state?.submittedData?.email}
                     className="w-full pl-10 pr-4 py-3 bg-mehub-bg border border-mehub-border rounded-lg text-mehub-text placeholder-mehub-text-secondary focus:border-mehub-primary focus:ring-1 focus:ring-mehub-primary outline-none transition-colors disabled:opacity-50"
                   />
                 </div>
@@ -59,7 +88,7 @@ export default function LoginPage() {
                     name="password"
                     placeholder="••••••••"
                     required
-                    disabled={pending}
+                    disabled={pending || state?.success}
                     className="w-full pl-10 pr-4 py-3 bg-mehub-bg border border-mehub-border rounded-lg text-mehub-text placeholder-mehub-text-secondary focus:border-mehub-primary focus:ring-1 focus:ring-mehub-primary outline-none transition-colors disabled:opacity-50"
                   />
                 </div>
@@ -68,10 +97,10 @@ export default function LoginPage() {
               {/* Login Button */}
               <Button
                 type="submit"
-                disabled={pending}
+                disabled={pending || state?.success}
                 className="w-full border border-mehub-border bg-mehub-primary text-mehub-bg hover:bg-orange-500 hover:border-orange-500 hover:text-white transition-all disabled:opacity-50"
               >
-                {pending ? 'Signing in...' : 'Sign In'}
+                {pending ? 'Signing in...' : state?.success ? 'Redirecting...' : 'Sign In'}
               </Button>
             </form>
           </Card>

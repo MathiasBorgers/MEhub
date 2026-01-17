@@ -22,20 +22,27 @@ export async function getSessionFromCookie(stateful = true): Promise<SessionWith
   }
 
   const tokenBody = await getJwtBody()
-  return tokenBody
-    ? {
-        id: tokenBody.sessionId,
-        userId: tokenBody.sub,
-        user: {
-          username: tokenBody.username,
-          role: tokenBody.role,
-          id: tokenBody.sub,
-          email: tokenBody.email,
-        },
-        activeUntil: new Date(tokenBody.exp * 1000),
-        activeFrom: new Date(tokenBody.iat * 1000),
-      }
-    : null
+  if (!tokenBody) return null
+
+  // For stateless sessions, construct a minimal session from JWT
+  // Note: This is not a full database profile, just enough for authentication
+  return {
+    id: tokenBody.sessionId,
+    userId: tokenBody.sub,
+    user: {
+      username: tokenBody.username,
+      role: tokenBody.role,
+      id: tokenBody.sub,
+      email: tokenBody.email,
+      bio: null,
+      avatar: null,
+      joinDate: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    activeUntil: new Date(tokenBody.exp * 1000),
+    activeFrom: new Date(tokenBody.iat * 1000),
+  }
 }
 
 export async function getSessionProfileFromCookie(stateful = true): Promise<Profile | null> {
@@ -55,7 +62,9 @@ export async function getSessionProfileFromCookieOrThrow(stateful = true): Promi
 
 export async function extendSessionAndSetCookie(id: string, role: Role): Promise<void> {
   const extendedSession = await extendSession(id, role)
-  await setSessionCookie(extendedSession)
+  if (extendedSession) {
+    await setSessionCookie(extendedSession)
+  }
 }
 
 // *********************************************************************************************************************
@@ -63,6 +72,7 @@ export async function extendSessionAndSetCookie(id: string, role: Role): Promise
 // *********************************************************************************************************************
 
 const cookieName = 'sessionId'
+const clientCookieName = 'session-user' // Voor client-side UI (niet veilig, alleen voor display)
 
 /**
  * Add a session cookie to the request which includes the user's session id.
@@ -72,10 +82,29 @@ const cookieName = 'sessionId'
 export async function setSessionCookie(session: SessionWithProfile): Promise<void> {
   const awaitedCookies = await cookies()
   const jwt = createStatefulJwtToken(session)
+
+  // Secure httpOnly cookie voor server-side authenticatie
   awaitedCookies.set({
     name: cookieName,
     value: jwt,
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/',
+    expires: session.activeUntil,
+  })
+
+  // Client-readable cookie voor UI (bevat alleen niet-gevoelige info)
+  awaitedCookies.set({
+    name: clientCookieName,
+    value: JSON.stringify({
+      username: session.user.username,
+      email: session.user.email,
+      role: session.user.role,
+      bio: session.user.bio,
+      avatar: session.user.avatar,
+    }),
+    httpOnly: false, // Client kan deze lezen
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     path: '/',
@@ -89,6 +118,7 @@ export async function setSessionCookie(session: SessionWithProfile): Promise<voi
 export async function clearSessionCookie(): Promise<void> {
   const awaitedCookies = await cookies()
   awaitedCookies.delete(cookieName)
+  awaitedCookies.delete(clientCookieName) // Ook de client cookie verwijderen
 }
 
 /**
