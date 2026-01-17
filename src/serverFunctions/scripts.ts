@@ -14,7 +14,7 @@ import {
 } from '@/dal/scripts'
 import {protectedFormAction, protectedServerFunction} from '@/lib/serverFunctions'
 import {createScriptSchema, updateScriptSchema} from '@/schemas/scriptSchemas'
-import {Role} from '@/generated/prisma/enums'
+import {Role} from '@prisma/client'
 
 /**
  * Create a new script (Developer & Admin only)

@@ -5,7 +5,7 @@ import {useRouter} from 'next/navigation'
 import {Button} from '@/components/ui/button'
 import {Shield, User, Crown, Trash2} from 'lucide-react'
 import {useAdminUsers} from '@/hooks/useAdminUsers'
-import {Role} from '@/generated/prisma/enums'
+import {Role} from '@prisma/client'
 import {
   Dialog,
   DialogContent,

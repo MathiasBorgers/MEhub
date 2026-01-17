@@ -1,6 +1,6 @@
 import 'server-only'
 import {prismaClient} from './prismaClient'
-import type {Download, Prisma} from '@/generated/prisma/client'
+import type {Download, Prisma} from '@prisma/client'
 
 export type DownloadWithRelations = Prisma.DownloadGetPayload<{
   include: {

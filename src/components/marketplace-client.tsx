@@ -8,7 +8,7 @@ import { useState, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import type { ScriptWithRelations } from "@/dal/scripts"
 import type { CategoryWithScriptCount } from "@/dal/categories"
-import type { Tag } from "@/generated/prisma/client"
+import type { Tag } from "@prisma/client"
 
 type SortOption = "trending" | "recent" | "top-rated" | "downloads"
 

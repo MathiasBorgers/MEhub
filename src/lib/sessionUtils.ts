@@ -1,6 +1,6 @@
 import type {Profile, SessionWithProfile} from '@/models/users'
 import {cookies} from 'next/headers'
-import type {Role} from '@/generated/prisma/client'
+import type {Role} from '@prisma/client'
 import {extendSession, getSessionProfile} from '@/dal/users'
 import type {StatefulJwtTokenBody} from '@/lib/jwtUtils'
 import {createStatefulJwtToken, validateStatefulJwtToken} from '@/lib/jwtUtils'

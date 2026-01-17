@@ -15,7 +15,7 @@ import {
 import {getScriptById, incrementScriptDownloads} from '@/dal/scripts'
 import {protectedServerFunction, protectedFormAction} from '@/lib/serverFunctions'
 import {createDownloadSchema, downloadSchema} from '@/schemas/downloadSchemas'
-import {Role} from '@/generated/prisma/enums'
+import {Role} from '@prisma/client'
 
 /**
  * Track a script download

@@ -6,7 +6,7 @@
 import {revalidatePath} from 'next/cache'
 import {getScriptLike, createLike, deleteLike} from '@/dal/scriptLikes'
 import {protectedFormAction} from '@/lib/serverFunctions'
-import {Role} from '@/generated/prisma/enums'
+import {Role} from '@prisma/client'
 import {z} from 'zod'
 
 const toggleLikeSchema = z.object({

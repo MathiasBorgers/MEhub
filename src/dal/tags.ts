@@ -1,6 +1,6 @@
 import 'server-only'
 import {prismaClient} from './prismaClient'
-import type {Tag} from '@/generated/prisma/client'
+import type {Tag} from '@prisma/client'
 
 export async function getTags(filters?: {search?: string; limit?: number}): Promise<Tag[]> {
   return prismaClient.tag.findMany({

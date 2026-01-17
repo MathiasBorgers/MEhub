@@ -1,6 +1,6 @@
 import 'server-only'
 import {prismaClient} from './prismaClient'
-import type {File} from '@/generated/prisma/client'
+import type {File} from '@prisma/client'
 
 export async function getFiles(filters?: {scriptId?: string; type?: string}): Promise<File[]> {
   return prismaClient.file.findMany({

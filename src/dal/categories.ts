@@ -1,6 +1,6 @@
 import 'server-only'
 import {prismaClient} from './prismaClient'
-import type {Category} from '@/generated/prisma/client'
+import type {Category} from '@prisma/client'
 
 export type CategoryWithScriptCount = Category & { scriptCount: number }
 

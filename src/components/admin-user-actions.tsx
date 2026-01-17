@@ -3,7 +3,7 @@
 import {useState} from 'react'
 import {useAdminUsers} from '@/hooks'
 import {Button} from '@/components/ui/button'
-import {Role} from '@/generated/prisma/enums'
+import {Role} from '@prisma/client'
 import {Loader2} from 'lucide-react'
 
 interface AdminUserActionsProps {

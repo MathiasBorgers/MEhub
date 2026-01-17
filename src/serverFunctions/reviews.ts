@@ -16,7 +16,7 @@ import {
 import {getScriptById} from '@/dal/scripts'
 import {protectedFormAction, protectedServerFunction} from '@/lib/serverFunctions'
 import {createReviewSchema, updateReviewSchema} from '@/schemas/reviewSchemas'
-import {Role} from '@/generated/prisma/enums'
+import {Role} from '@prisma/client'
 
 /**
  * Create a new review for a script

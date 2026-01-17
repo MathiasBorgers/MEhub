@@ -1,6 +1,6 @@
 import 'server-only'
 import {prismaClient} from './prismaClient'
-import type {Review, Prisma} from '@/generated/prisma/client'
+import type {Review, Prisma} from '@prisma/client'
 
 export type ReviewWithUser = Prisma.ReviewGetPayload<{
   include: {

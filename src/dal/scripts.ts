@@ -1,6 +1,6 @@
 import 'server-only'
 import {prismaClient} from './prismaClient'
-import type {Script, Prisma} from '@/generated/prisma/client'
+import type {Script, Prisma} from '@prisma/client'
 
 export type ScriptWithRelations = Prisma.ScriptGetPayload<{
   include: {

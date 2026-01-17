@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { getSessionProfileFromCookie } from "@/lib/sessionUtils"
 import { redirect } from "next/navigation"
-import { Role } from "@/generated/prisma/enums"
+import { Role } from "@prisma/client"
 import { getTags } from "@/dal/tags"
 import {TagList} from '@/components/tag-list'
 

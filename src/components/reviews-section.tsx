@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { ReviewForm } from "@/components/review-form"
 import { useReviews } from "@/hooks/useReviews"
 import { useToast } from "@/hooks/use-toast"
-import type { Review } from "@/generated/prisma/client"
+import type { Review } from "@prisma/client"
 
 interface ReviewWithUser extends Review {
   user: {

@@ -1,6 +1,6 @@
 import 'server-only'
 import {prismaClient} from './prismaClient'
-import type {ScriptLike} from '@/generated/prisma/client'
+import type {ScriptLike} from '@prisma/client'
 
 export async function getScriptLike(userId: string, scriptId: string): Promise<ScriptLike | null> {
   return prismaClient.scriptLike.findUnique({

@@ -4,7 +4,7 @@ import { getCategories } from "@/dal/categories"
 import { getTags } from "@/dal/tags"
 import { getSessionProfileFromCookie } from "@/lib/sessionUtils"
 import { redirect } from "next/navigation"
-import { Role } from "@/generated/prisma/enums"
+import { Role } from "@prisma/client"
 
 export default async function UploadPage() {
   // Check authentication and authorization

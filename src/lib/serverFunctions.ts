@@ -9,7 +9,7 @@ import type {
 } from '@/models/serverFunctions'
 import {getSessionProfileFromCookieOrThrow} from '@/lib/sessionUtils'
 import {validateSchema} from '@/lib/validateSchema'
-import type {Role} from '@/generated/prisma/enums'
+import type {Role} from '@prisma/client'
 import type {Logger} from 'pino'
 import {getLogger} from '@/lib/logger'
 import {convertFormData} from '@/lib/convertFormData'

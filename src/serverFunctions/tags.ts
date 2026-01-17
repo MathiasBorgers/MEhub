@@ -13,7 +13,7 @@ import {
 } from '@/dal/tags'
 import {protectedFormAction, protectedServerFunction} from '@/lib/serverFunctions'
 import {createTagSchema, updateTagSchema} from '@/schemas/tagSchemas'
-import {Role} from '@/generated/prisma/enums'
+import {Role} from '@prisma/client'
 
 export const createTagAction = protectedFormAction({
   schema: createTagSchema,

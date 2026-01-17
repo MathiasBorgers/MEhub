@@ -5,7 +5,7 @@ import {useRouter} from 'next/navigation'
 import {Button} from '@/components/ui/button'
 import {Trash2, Edit2} from 'lucide-react'
 import {useAdminCategories} from '@/hooks/useAdminCategories'
-import type {Category} from '@/generated/prisma/client'
+import type {Category} from '@prisma/client'
 import {
   Dialog,
   DialogContent,

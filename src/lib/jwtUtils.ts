@@ -1,7 +1,7 @@
 import 'server-only'
 import JWT from 'jsonwebtoken'
 import type {Profile, SessionWithProfile} from '@/models/users'
-import type {Role} from '@/generated/prisma/enums'
+import type {Role} from '@prisma/client'
 
 const {PUBLIC_KEY, PRIVATE_KEY} = process.env
 const TOKEN_EXPIRATION = '24h'

@@ -1,6 +1,6 @@
 import 'server-only'
 import {prismaClient} from './prismaClient'
-import type {Prisma, Role, User, Session} from '@/generated/prisma/client'
+import type {Prisma, Role, User, Session} from '@prisma/client'
 import {cache} from 'react'
 import {hashPassword} from '@/lib/passwordUtils'
 import type {Profile, SessionWithProfile} from '@/models/users'

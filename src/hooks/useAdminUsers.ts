@@ -6,7 +6,7 @@
 import {useTransition, useState} from 'react'
 import {useRouter} from 'next/navigation'
 import {updateUserRoleAction, deleteUserAction} from '@/serverFunctions/users'
-import type {Role} from '@/generated/prisma/enums'
+import type {Role} from '@prisma/client'
 
 interface UseAdminUsersReturn {
   updateUserRole: (userId: string, role: Role) => Promise<void>

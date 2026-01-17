@@ -22,7 +22,7 @@ import {getSalt, hashOptions, verifyPassword, hashPassword} from '@/lib/password
 import {clearSessionCookie, getSessionId, setSessionCookie} from '@/lib/sessionUtils'
 import {protectedFormAction, protectedServerFunction, publicFormAction, publicServerFunction} from '@/lib/serverFunctions'
 import {registerSchema, signInSchema, updateUserSchema, updateRoleSchema, deleteUserSchema, changePasswordSchema} from '@/schemas/userSchemas'
-import {Role} from '@/generated/prisma/enums'
+import {Role} from '@prisma/client'
 
 export const registerAction = publicFormAction({
   schema: registerSchema,

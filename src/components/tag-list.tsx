@@ -5,7 +5,7 @@ import {useRouter} from 'next/navigation'
 import {Button} from '@/components/ui/button'
 import {Trash2, Edit2} from 'lucide-react'
 import {useAdminTags} from '@/hooks/useAdminTags'
-import type {Tag} from '@/generated/prisma/client'
+import type {Tag} from '@prisma/client'
 import {
   Dialog,
   DialogContent,

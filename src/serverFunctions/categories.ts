@@ -13,7 +13,7 @@ import {
 } from '@/dal/categories'
 import {protectedFormAction, protectedServerFunction} from '@/lib/serverFunctions'
 import {createCategorySchema, updateCategorySchema} from '@/schemas/categorySchemas'
-import {Role} from '@/generated/prisma/enums'
+import {Role} from '@prisma/client'
 
 /**
  * Create a new category (Admin only)

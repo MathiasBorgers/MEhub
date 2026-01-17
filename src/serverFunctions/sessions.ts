@@ -13,7 +13,7 @@ import {
 } from '@/dal/users'
 import {protectedServerFunction} from '@/lib/serverFunctions'
 import {deleteSessionSchema, extendSessionSchema} from '@/schemas/sessionSchemas'
-import {Role} from '@/generated/prisma/enums'
+import {Role} from '@prisma/client'
 
 /**
  * Revoke/Delete a session (Owner or Admin only)

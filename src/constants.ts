@@ -1,4 +1,4 @@
-import {Role} from '@/generated/prisma/enums'
+import {Role} from '@prisma/client'
 
 export const SessionDuration = {
   [Role.User]: 1000 * 60 * 60 * 24, // 24 uur

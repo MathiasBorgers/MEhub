@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { getSessionProfileFromCookie } from "@/lib/sessionUtils"
 import { redirect } from "next/navigation"
-import { Role } from "@/generated/prisma/enums"
+import { Role } from "@prisma/client"
 import { prismaClient } from "@/dal/prismaClient"
 import { Star, Trash2 } from "lucide-react"
 

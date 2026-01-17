@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Clock } from 'lucide-react'
-import { Role } from '@/generated/prisma/enums'
+import { Role } from '@prisma/client'
 import { revokeSessionAction } from '@/serverFunctions/sessions'
 import type { SessionWithProfile } from '@/models/users'
 

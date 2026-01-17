@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card"
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
-import type { Category, Tag } from "@/generated/prisma/client"
+import type { Category, Tag } from "@prisma/client"
 import { LuaCodeEditor } from "@/components/lua-code-editor"
 
 // Form data type with required arrays for better form handling
