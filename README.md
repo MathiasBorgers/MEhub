@@ -1,10 +1,83 @@
-# MEhub - RuneScape 3 Script Sharing Platform
+# 🎮 MEhub - RuneScape 3 Script Sharing Platform
 
-# Link naar v0 -> https://v0.app/chat/me-hub-script-platform-hcP7uTyLVCJ?ref=IA554F
+A modern Next.js platform for sharing and discovering RuneScape 3 scripts, built with TypeScript, Prisma, and PostgreSQL.
 
-## Test Accounts / Inloggegevens
+## ✨ Features
 
-Voor het testen van de authenticatie functionaliteit zijn de volgende test accounts beschikbaar:
+- 📜 **Script Marketplace** - Browse, upload, and download RS3 scripts
+- 👤 **User Authentication** - Secure JWT-based authentication
+- ⭐ **Reviews & Ratings** - Rate and review scripts
+- 🏷️ **Categories & Tags** - Organize scripts by type and activity
+- 💾 **Download Tracking** - Keep track of popular scripts
+- 👨‍💻 **Developer Profiles** - Showcase your scripts
+- 🔍 **Advanced Search** - Filter by category, tags, and ratings
+- 📱 **Responsive Design** - Works on desktop and mobile
+
+## 🚀 Tech Stack
+
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Database:** [PostgreSQL](https://www.postgresql.org/) with [Prisma ORM](https://www.prisma.io/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components:** [Radix UI](https://www.radix-ui.com/)
+- **Form Validation:** [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
+- **Authentication:** JWT with RS256
+- **Code Editor:** [Monaco Editor](https://microsoft.github.io/monaco-editor/)
+
+## 📋 Prerequisites
+
+- Node.js 20.x or higher
+- PostgreSQL 14.x or higher
+- pnpm (recommended) or npm
+
+## 🛠️ Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/KnetterbalScripts/mehub.git
+   cd mehub
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Setup environment variables**
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Edit `.env` and add your database URL and JWT keys:
+   ```env
+   DATABASE_URL=postgresql://user:password@localhost:5432/mehub
+   PRIVATE_KEY=your_base64_encoded_private_key
+   PUBLIC_KEY=your_base64_encoded_public_key
+   ```
+
+4. **Setup the database**
+   ```bash
+   # Generate Prisma Client
+   npx prisma generate
+   
+   # Run migrations
+   npx prisma migrate dev
+   
+   # Seed the database with test data
+   npx prisma db seed
+   ```
+
+5. **Start the development server**
+   ```bash
+   pnpm dev
+   ```
+
+6. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🔑 Test Accounts
+
+After seeding the database, you can use these test accounts:
 
 ### Administrator
 - **Email:** admin@mehub.com
@@ -43,12 +116,74 @@ Voor het testen van de authenticatie functionaliteit zijn de volgende test accou
 - **Usernames:** player2 to player7
 - **Password:** password123
 - **Role:** User
-- **Description:** Additional test users
 
----
+## 📁 Project Structure
 
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/ZQkUYFyq)
-# Opgave
+```
+mehub/
+├── prisma/
+│   ├── schema.prisma      # Database schema
+│   ├── seed.ts            # Seed script
+│   └── migrations/        # Database migrations
+├── src/
+│   ├── app/              # Next.js App Router pages
+│   ├── components/       # React components
+│   ├── dal/             # Data Access Layer
+│   ├── hooks/           # Custom React hooks
+│   ├── lib/             # Utility functions
+│   ├── models/          # Data models
+│   ├── schemas/         # Zod validation schemas
+│   └── serverFunctions/ # Server-side functions
+└── public/              # Static assets
+```
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Import your repository on [Vercel](https://vercel.com)
+3. Add environment variables
+4. Deploy!
+
+See [COMBELL-DEPLOYMENT-GUIDE.md](./COMBELL-DEPLOYMENT-GUIDE.md) for alternative hosting options.
+
+## 📝 Available Scripts
+
+```bash
+# Development
+pnpm dev          # Start dev server with Turbopack
+pnpm build        # Build for production
+pnpm start        # Start production server
+
+# Database
+npx prisma studio        # Open Prisma Studio
+npx prisma migrate dev   # Create and apply migration
+npx prisma db seed       # Seed database
+
+# Code Quality
+pnpm lint         # Run ESLint
+pnpm lint-fix     # Fix ESLint errors
+pnpm format       # Format with Prettier
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 👤 Author
+
+**Mathias Borgers**
+- GitHub: [@KnetterbalScripts](https://github.com/KnetterbalScripts)
+
+## 🙏 Acknowledgments
+
+- RuneScape is a registered trademark of Jagex Ltd.
+- This is a fan-made project and is not affiliated with Jagex Ltd.
 
 Voor het vak backend frameworks werk je **individueel** een project uit met Next.js, Tailwind, shadcn/ui, Prisma en
 Postgres.

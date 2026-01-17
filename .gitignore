@@ -44,3 +44,6 @@ next-env.d.ts
 /logs
 *.log
 
+# generated prisma (old custom output location)
+/src/generated
+

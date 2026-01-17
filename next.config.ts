@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   experimental: {
     typedEnv: true,
   },
-  serverExternalPackages: ["pino", "pino-pretty"],
+  serverExternalPackages: ["pino", "pino-pretty", "@prisma/client", "@prisma/adapter-pg"],
   images: {
     remotePatterns: [
       {
