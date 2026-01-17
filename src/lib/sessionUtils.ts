@@ -98,6 +98,7 @@ export async function setSessionCookie(session: SessionWithProfile): Promise<voi
   awaitedCookies.set({
     name: clientCookieName,
     value: JSON.stringify({
+      id: session.user.id, // Use user.id instead of userId
       username: session.user.username,
       email: session.user.email,
       role: session.user.role,
